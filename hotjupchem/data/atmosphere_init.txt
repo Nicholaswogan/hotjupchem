@@ -1,0 +1,3 @@
+alt      den        temp       eddy                       
+0.0      1          1000       1e6              
+1.0e3    1          1000       1e6         

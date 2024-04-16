@@ -1,0 +1,30 @@
+
+atmosphere-grid:
+  bottom: 0.0
+  top: atmospherefile
+  number-of-layers: NULL
+
+photolysis-grid:
+  regular-grid: true
+  lower-wavelength: 92.5
+  upper-wavelength: 855.0
+  number-of-bins: 200
+
+planet:
+  planet-mass: NULL
+  planet-radius: NULL
+  surface-albedo: 0.0
+  solar-zenith-angle: 60.0
+  hydrogen-escape:
+    type: none
+  default-gas-lower-boundary: Moses
+  water:
+    fix-water-in-troposphere: false
+    gas-rainout: false
+    water-condensation: true
+    condensation-rate: {A: 1.0e-8, rhc: 1, rh0: 1.05}
+
+boundary-conditions:
+- name: He
+  lower-boundary: {type: Moses}
+  upper-boundary: {type: veff, veff: 0}
