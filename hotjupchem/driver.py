@@ -66,7 +66,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.var.atol = self.atol_avg # Seems to be a good
         self.var.rtol = 1e-3
         self.var.conv_min_mix = 1e-10
-        self.var.conv_longdy = 0.05 
+        self.var.conv_longdy = 0.03
 
     def initialize_to_PT(self, P_in, P_ref, T_in, Kzz_in, metallicity, CtoO):
 
@@ -198,9 +198,12 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             # TOA pressure
             TOA_pressure = self.wrk.pressure[-1]
 
-            if converged and self.wrk.nsteps > self.min_step_conv and max_dT < self.max_dT_tol and max_dlog10edd < self.max_dlog10edd_tol and self.TOA_pressure_min < TOA_pressure < self.TOA_pressure_max:
+            condition1 = converged and self.wrk.nsteps > self.min_step_conv
+            condition2 = max_dT < self.max_dT_tol and max_dlog10edd < self.max_dlog10edd_tol and self.TOA_pressure_min < TOA_pressure < self.TOA_pressure_max
+
+            if condition1 and condition2:
                 if self.verbose:
-                    print('nsteps = %i,  longdy = %.1e,  max_dT = %.1e,  max_dlog10edd = %.1e,  TOA_pressure = %.1e,  '% \
+                    print('nsteps = %i  longdy = %.1e  max_dT = %.1e  max_dlog10edd = %.1e  TOA_pressure = %.1e'% \
                         (total_step_counter, self.wrk.longdy, max_dT, max_dlog10edd, TOA_pressure/1e6))
                 # success!
                 break
@@ -212,7 +215,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
                 atol_counter = 0
                 continue
         
-            if not (self.wrk.nsteps % self.freq_update_PTKzz):
+            if not (self.wrk.nsteps % self.freq_update_PTKzz) or (condition1 and not condition2):
                 # After 1000 steps, lets update P,T, edd and vertical grid
                 self.set_press_temp_edd(self.P1,self.T1,self.Kzz1,hydro_pressure=False)
                 self.update_vertical_grid(TOA_pressure=self.TOA_pressure_avg)
@@ -223,7 +226,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
                 break
 
             if not (self.wrk.nsteps % self.freq_print) and self.verbose:
-                print('nsteps = %i,  longdy = %.1e,  max_dT = %.1e,  max_dlog10edd = %.1e,  TOA_pressure = %.1e,  '% \
+                print('nsteps = %i  longdy = %.1e  max_dT = %.1e  max_dlog10edd = %.1e  TOA_pressure = %.1e'% \
                     (total_step_counter, self.wrk.longdy, max_dT, max_dlog10edd, TOA_pressure/1e6))
                 
         return success
