@@ -14,7 +14,22 @@ class EvoAtmosphereHJ(EvoAtmosphere):
     __isfrozen = False
 
     def __init__(self, stellar_flux_file, planet_mass, planet_radius, P_ref, nz=100):
+        """Initializes the code
 
+        Parameters
+        ----------
+        stellar_flux_file : str
+            Path to the file describing the stellar UV flux.
+        planet_mass : float
+            Planet mass in grams
+        planet_radius : float
+            Planet radius in cm
+        P_ref : float
+            Pressure level corresponding to the planet_radius
+        nz : int, optional
+            The number of layers in the photochemical model, by default 100
+        """        
+        
         # First, initialize photochemical model with dummy inputs
         with open(DATA_DIR+'settings_template.yaml','r') as f:
             sol = yaml.load(f, Loader=Loader)
@@ -68,7 +83,8 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.var.conv_longdy = 0.03 # threshold relative change that determines convergence
         self.var.verbose = 0 # No printing
 
-        # Values that will be needed later
+        # Values that will be needed later. All of these set
+        # in `initialize_to_climate_equilibrium_PT`
         self.P_clima_grid = None # The climate grid
         self.metallicity = None
         self.CtoO = None
@@ -93,7 +109,30 @@ class EvoAtmosphereHJ(EvoAtmosphere):
     def _freeze(self):
         self.__isfrozen = True
 
-    def initialize_to_PT(self, P_in, T_in, Kzz_in, metallicity, CtoO):
+    def initialize_to_climate_equilibrium_PT(self, P_in, T_in, Kzz_in, metallicity, CtoO):
+        """Initialized the photochemical model to a climate model result that assumes chemical equilibrium
+        at some metallicity and C/O ratio.
+
+        Parameters
+        ----------
+        P_in : ndarray[dim=1,double]
+            The pressures in the climate grid (dynes/cm^2). P_in[0] is pressure at
+            the deepest layer of the atmosphere
+        T_in : ndarray[dim1,double]
+            The temperatures in the climate grid corresponding to P_in (K)
+        Kzz_in : ndarray[dim1,double]
+            The eddy diffusion at each pressure P_in (cm^2/s)
+        metallicity : float
+            Metallicity relative to solar.
+        CtoO : float
+            C/O ratio relative to solar. So CtoO = 1 is solar C/O ratio.
+            CtoO = 2 is twice the solar C/O ratio.
+        """
+
+        if P_in.shape[0] != T_in.shape[0]:
+            raise Exception('Input P and T must have same shape')
+        if P_in.shape[0] != Kzz_in.shape[0]:
+            raise Exception('Input P and Kzz must have same shape')
 
         # Save inputs
         self.P_clima_grid = P_in
@@ -107,7 +146,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             raise Exception('The photochemical grid needs to extend above the climate grid')
 
         # Altitude of P-T grid
-        P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P_in, self.P_ref, T_in, mubar, self.planet_radius, self.planet_mass, self.TOA_pressure_avg)
+        P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P_in, self.P_ref, T_in, mubar, self.planet_radius, self.planet_mass, self.TOA_pressure_min)
         # If needed, extrapolte Kzz and mixing ratios
         if P1.shape[0] != Kzz_in.shape[0]:
             Kzz1 = np.append(Kzz_in,Kzz_in[-1])
@@ -138,6 +177,72 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             raise Exception('BOA in photochemical model wants to be deeper than BOA of climate model.')
         self.ind_b = np.argmin(np.abs(P1 - P1[ind]*self.BOA_pressure_factor))
         
+        self._initialize_atmosphere(P1, T1, Kzz1, z1, mix1)
+
+    def reinitialize_to_new_climate_PT(self, P_in, T_in, Kzz_in, mix):
+        """Reinitializes the photochemical model to the input P, T, Kzz, and mixing ratios
+        from the climate model.
+
+        Parameters
+        ----------
+        P_in : ndarray[ndim=1,double]
+            Pressure grid in climate model (dynes/cm^2).
+        T_in : ndarray[ndim=1,double]
+            Temperatures corresponding to P_in (K)
+        Kzz_in : ndarray[ndim,double]
+            Eddy diffusion coefficients at each pressure level (cm^2/s)
+        mix : dict
+            Mixing ratios of all species in the atmosphere
+
+        """        
+
+        if self.P_clima_grid is None:
+            raise Exception('This routine can only be called after `initialize_to_climate_equilibrium_PT`')
+        if not np.all(np.isclose(self.P_clima_grid,P_in)):
+            raise Exception('Input pressure grid does not match saved pressure grid')
+        if P_in.shape[0] != T_in.shape[0]:
+            raise Exception('Input P and T must have same shape')
+        if P_in.shape[0] != Kzz_in.shape[0]:
+            raise Exception('Input P and Kzz must have same shape')
+        for key in mix:
+            if P_in.shape[0] != mix[key].shape[0]:
+                raise Exception('Input P and mix must have same shape')
+        species_names = self.dat.species_names[:-2]
+        if set(list(mix.keys())) != set(species_names):
+            raise Exception('Some species are missing from input mix') 
+        
+        # Compute mubar
+        mubar = np.zeros(T_in.shape[0])
+        species_mass = self.dat.species_mass
+        for sp in mix:
+            ind = species_names.index(sp)
+            mubar = mubar + mix[sp]*species_mass[ind]
+
+        # Compute altitude of P-T grid
+        P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P_in, self.P_ref, T_in, mubar, self.planet_radius, self.planet_mass, self.TOA_pressure_min)
+        # If needed, extrapolte Kzz and mixing ratios
+        if P1.shape[0] != Kzz_in.shape[0]:
+            Kzz1 = np.append(Kzz_in,Kzz_in[-1])
+            mix1 = {}
+            for sp in mix:
+                mix1[sp] = np.append(mix[sp],mix[sp][-1])
+        else:
+            Kzz1 = Kzz_in.copy()
+            mix1 = mix
+
+        # Save P-T-Kzz for later interpolation and corrections
+        self.log10P_interp = np.log10(P1.copy()[::-1])
+        self.T_interp = T1.copy()[::-1]
+        self.log10edd_interp = np.log10(Kzz1.copy()[::-1])
+        self.P_desired = P1.copy()
+        self.T_desired = T1.copy()
+        self.Kzz_desired = Kzz1.copy()
+
+        self._initialize_atmosphere(P1, T1, Kzz1, z1, mix1)
+
+    def _initialize_atmosphere(self, P1, T1, Kzz1, z1, mix1):
+        "Little helper function preventing code duplication."
+
         # Compute TOA index
         ind_t = np.argmin(np.abs(P1 - self.TOA_pressure_avg))
 
@@ -189,10 +294,17 @@ class EvoAtmosphereHJ(EvoAtmosphere):
 
         self.prep_atmosphere(self.wrk.usol)
 
-    def reinitialize_to_PTX(self, P_in, T_in, Kzz_in, mix):
-        pass
+    def return_atmosphere_climate_grid(self):
+        """Returns a dictionary with temperature, Kzz and mixing ratios
+        on the climate model grid.
 
-    def return_atmosphere_clima_grid(self):
+        Returns
+        -------
+        dict
+            Contains temperature, Kzz, and mixing ratios.
+        """ 
+        if self.P_clima_grid is None:
+            raise Exception('This routine can only be called after `initialize_to_climate_equilibrium_PT`')
 
         # return full atmosphere
         out = self.return_atmosphere()
@@ -218,6 +330,24 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         return sol
 
     def return_atmosphere(self, include_deep_atmosphere = True):
+        """Returns a dictionary with temperature, Kzz and mixing ratios
+        on the photochemical grid.
+
+        Parameters
+        ----------
+        include_deep_atmosphere : bool, optional
+            If True, then results will include portions of the deep
+            atomsphere that are not part of the photochemical grid, by default True
+
+        Returns
+        -------
+        dict
+            Contains temperature, Kzz, and mixing ratios.
+        """        
+
+        if self.P_clima_grid is None:
+            raise Exception('This routine can only be called after `initialize_to_climate_equilibrium_PT`')
+
         out = {}
         out['pressure'] = self.wrk.pressure
         out['temperature'] = self.var.temperature
@@ -246,7 +376,17 @@ class EvoAtmosphereHJ(EvoAtmosphere):
 
         return out 
     
-    def photochemical_steady_state(self):
+    def find_steady_state(self):
+        """Attempts to find a photochemical steady state.
+
+        Returns
+        -------
+        bool
+            If True, then the routine was successful.
+        """        
+
+        if self.P_clima_grid is None:
+            raise Exception('This routine can only be called after `initialize_to_climate_equilibrium_PT`')
 
         total_step_counter = 0
         atol_counter = 0
