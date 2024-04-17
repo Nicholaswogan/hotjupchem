@@ -62,8 +62,6 @@ class EvoAtmosphereHJ(EvoAtmosphere):
 
         # Parameters for determining steady state
         self.TOA_pressure_avg = 1.0e-7*1e6 # mean TOA pressure (dynes/cm^2)
-        self.TOA_pressure_min = 1.0e-8*1e6 # min TOA pressure (dynes/cm^2)
-        self.TOA_pressure_max = 5.0e-7*1e6 # max TOA pressure (dynes/cm^2)
         self.max_dT_tol = 5 # The permitted difference between T in photochem and desired T
         self.max_dlog10edd_tol = 0.2 # The permitted difference between Kzz in photochem and desired Kzz
         self.atol_min = 1e-15 # min atol that will be tried
@@ -142,11 +140,11 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         # Compute chemical equilibrium along the whole P-T profile
         mix, mubar = self.m.composition(T_in, P_in, CtoO, metallicity)
 
-        if self.TOA_pressure_max > P_in[-1]:
+        if self.TOA_pressure_avg*3 > P_in[-1]:
             raise Exception('The photochemical grid needs to extend above the climate grid')
 
         # Altitude of P-T grid
-        P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P_in, self.P_ref, T_in, mubar, self.planet_radius, self.planet_mass, self.TOA_pressure_min)
+        P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P_in, self.P_ref, T_in, mubar, self.planet_radius, self.planet_mass, self.TOA_pressure_avg)
         # If needed, extrapolte Kzz and mixing ratios
         if P1.shape[0] != Kzz_in.shape[0]:
             Kzz1 = np.append(Kzz_in,Kzz_in[-1])
@@ -219,7 +217,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             mubar = mubar + mix[sp]*species_mass[ind]
 
         # Compute altitude of P-T grid
-        P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P_in, self.P_ref, T_in, mubar, self.planet_radius, self.planet_mass, self.TOA_pressure_min)
+        P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P_in, self.P_ref, T_in, mubar, self.planet_radius, self.planet_mass, self.TOA_pressure_avg)
         # If needed, extrapolte Kzz and mixing ratios
         if P1.shape[0] != Kzz_in.shape[0]:
             Kzz1 = np.append(Kzz_in,Kzz_in[-1])
@@ -349,7 +347,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             raise Exception('This routine can only be called after `initialize_to_climate_equilibrium_PT`')
 
         out = {}
-        out['pressure'] = self.wrk.pressure
+        out['pressure'] = self.wrk.pressure_hydro
         out['temperature'] = self.var.temperature
         out['Kzz'] = self.var.edd
         species_names = self.dat.species_names[:-2]
@@ -361,7 +359,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             return out
 
         # Prepend the deeper atmosphere, which we will assume is at Equilibrium
-        inds = np.where(self.P_desired > self.wrk.pressure[0])
+        inds = np.where(self.P_desired > self.wrk.pressure_hydro[0])
         out1 = {}
         out1['pressure'] = self.P_desired[inds]
         out1['temperature'] = self.T_desired[inds]
@@ -416,21 +414,21 @@ class EvoAtmosphereHJ(EvoAtmosphere):
 
             # Compute the max difference between the P-T profile in photochemical model
             # and the desired P-T profile
-            T_p = np.interp(np.log10(self.wrk.pressure.copy()[::-1]), self.log10P_interp, self.T_interp)
+            T_p = np.interp(np.log10(self.wrk.pressure_hydro.copy()[::-1]), self.log10P_interp, self.T_interp)
             T_p = T_p.copy()[::-1]
             max_dT = np.max(np.abs(T_p - self.var.temperature))
 
             # Compute the max difference between the P-edd profile in photochemical model
             # and the desired P-edd profile
-            log10edd_p = np.interp(np.log10(self.wrk.pressure.copy()[::-1]), self.log10P_interp, self.log10edd_interp)
+            log10edd_p = np.interp(np.log10(self.wrk.pressure_hydro.copy()[::-1]), self.log10P_interp, self.log10edd_interp)
             log10edd_p = log10edd_p.copy()[::-1]
             max_dlog10edd = np.max(np.abs(log10edd_p - np.log10(self.var.edd)))
 
             # TOA pressure
-            TOA_pressure = self.wrk.pressure[-1]
+            TOA_pressure = self.wrk.pressure_hydro[-1]
 
-            condition1 = converged and self.wrk.nsteps > self.min_step_conv
-            condition2 = max_dT < self.max_dT_tol and max_dlog10edd < self.max_dlog10edd_tol and self.TOA_pressure_min < TOA_pressure < self.TOA_pressure_max
+            condition1 = converged and self.wrk.nsteps > self.min_step_conv or self.wrk.tn > self.var.equilibrium_time
+            condition2 = max_dT < self.max_dT_tol and max_dlog10edd < self.max_dlog10edd_tol and self.TOA_pressure_avg/3 < TOA_pressure < self.TOA_pressure_avg*3
 
             if condition1 and condition2:
                 if self.verbose:
@@ -447,8 +445,8 @@ class EvoAtmosphereHJ(EvoAtmosphere):
                 continue
         
             if not (self.wrk.nsteps % self.freq_update_PTKzz) or (condition1 and not condition2):
-                # After 1000 steps, lets update P,T, edd and vertical grid
-                self.set_press_temp_edd(self.P_desired,self.T_desired,self.Kzz_desired,hydro_pressure=False)
+                # After ~1000 steps, lets update P,T, edd and vertical grid
+                self.set_press_temp_edd(self.P_desired,self.T_desired,self.Kzz_desired,hydro_pressure=True)
                 self.update_vertical_grid(TOA_pressure=self.TOA_pressure_avg)
                 self.initialize_stepper(self.wrk.usol)
 
