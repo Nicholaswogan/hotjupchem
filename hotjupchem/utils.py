@@ -1,5 +1,6 @@
 import numpy as np
 import numba as nb
+from numba import types
 from scipy import constants as const
 from scipy import integrate
 import cantera as ct
@@ -270,8 +271,12 @@ def deepest_quench_level(T, P, Kzz, mubar, grav):
     quench_levels = determine_quench_levels(T, P, Kzz, mubar, grav)
     return np.min(quench_levels)
     
-
+@nb.experimental.jitclass()
 class TempPressMubar:
+
+    log10P : types.double[:]
+    T : types.double[:]
+    mubar : types.double[:]
 
     def __init__(self, P, T, mubar):
         self.log10P = np.log10(P)[::-1].copy()
@@ -282,13 +287,15 @@ class TempPressMubar:
         T = np.interp(np.log10(P), self.log10P, self.T)
         mubar = np.interp(np.log10(P), self.log10P, self.mubar)
         return T, mubar
-    
+
+@nb.njit()
 def gravity(radius, mass, z):
     G_grav = const.G
     grav = G_grav * (mass/1.0e3) / ((radius + z)/1.0e2)**2.0
     grav = grav*1.0e2 # convert to cgs
     return grav
 
+@nb.njit()
 def hydrostatic_equation(P, u, planet_radius, planet_mass, ptm):
     z = u[0]
     grav = gravity(planet_radius, planet_mass, z)
@@ -300,7 +307,9 @@ def hydrostatic_equation(P, u, planet_radius, planet_mass, ptm):
 def compute_altitude_of_PT(P, P_ref, T, mubar, planet_radius, planet_mass, P_top):
     ptm = TempPressMubar(P, T, mubar)
     args = (planet_radius, planet_mass, ptm)
+
     if P_top < P[-1]:
+        # If P_top is lower P than P grid, then we extend it
         P_top_ = P_top
         P_ = np.append(P,P_top_)
         T_ = np.append(T,T[-1])
@@ -311,16 +320,24 @@ def compute_altitude_of_PT(P, P_ref, T, mubar, planet_radius, planet_mass, P_top
         T_ = T.copy()
         mubar_ = mubar.copy()
 
+    # Make sure P_ref is in the P grid
     if P_ref > P_[0] or P_ref < P_[-1]:
         raise Exception('Reference pressure must be within P grid.')
-    ind_ref = np.argmin(np.abs(P_ - P_ref))
+    
+    # Find first index with lower pressure than P_ref
+    ind = 0
+    for i in range(P_.shape[0]):
+        if P_[i] < P_ref:
+            ind = i
+            break
 
-    if ind_ref == 0 or ind_ref == P_.shape[0]:
-        raise Exception('Reference pressure mest be within P grid.')
+    # Integrate from P_ref to TOA
+    out2 = integrate.solve_ivp(hydrostatic_equation, [P_ref, P_[-1]], np.array([0.0]), t_eval=P_[ind:], args=args, method='LSODA', rtol=1e-6)
+    # Integrate from P_ref to BOA
+    out1 = integrate.solve_ivp(hydrostatic_equation, [P_ref, P_[0]], np.array([0.0]), t_eval=P_[:ind][::-1], args=args, method='LSODA', rtol=1e-6)
 
-    out2 = integrate.solve_ivp(hydrostatic_equation, [P_[ind_ref], P_[-1]], np.array([0.0]), t_eval=P_[ind_ref:], args=args)
-    out1 = integrate.solve_ivp(hydrostatic_equation, [P_[ind_ref], P_[0]], np.array([0.0]), t_eval=P_[:ind_ref][::-1], args=args)
-
+    # Stitch together
     z_ = np.append(out1.y[0][::-1],out2.y[0])
+
     return P_, T_, mubar_, z_
 

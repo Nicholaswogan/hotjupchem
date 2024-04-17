@@ -10,39 +10,12 @@ from . import utils
 DATA_DIR = os.path.dirname(os.path.realpath(__file__))+'/data/'
 
 class EvoAtmosphereHJ(EvoAtmosphere):
-
-    stellar_flux_file : str
-    planet_radius : float
-    planet_mass : float
-    TOA_pressure_avg : float
-    TOA_pressure_min : float
-    TOA_pressure_max : float
     
-    BOA_pressure_factor : float
+    __isfrozen = False
 
-    def __init__(self, stellar_flux_file, planet_mass, planet_radius, nz=100):
+    def __init__(self, stellar_flux_file, planet_mass, planet_radius, P_ref, nz=100):
 
-        self.stellar_flux_file = stellar_flux_file
-        self.planet_radius = planet_radius
-        self.planet_mass = planet_mass
-        self.TOA_pressure_avg = 1.0e-7*1e6
-        self.TOA_pressure_min = 1.0e-8*1e6
-        self.TOA_pressure_max = 5.0e-7*1e6
-        self.max_dT_tol = 10
-        self.max_dlog10edd_tol = 0.2
-        self.atol_min = 1e-15
-        self.atol_max = 2e-14
-        self.atol_avg = 1e-14
-        self.freq_update_PTKzz = 1000
-        self.freq_reinit = 10_000
-        self.freq_print = 100
-        self.max_total_step = 100_000
-        self.min_step_conv = 300
-
-        self.BOA_pressure_factor = 10.0
-        self.verbose = False
-
-        # Using settings template
+        # First, initialize photochemical model with dummy inputs
         with open(DATA_DIR+'settings_template.yaml','r') as f:
             sol = yaml.load(f, Loader=Loader)
         sol['atmosphere-grid']['number-of-layers'] = int(nz)
@@ -51,7 +24,6 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         sol = FormatSettings_main(sol)
         with open('tmpfile1234567890.yaml', 'w') as f:
             yaml.dump(sol,f,Dumper=MyDumper)
-
         EvoAtmosphere.__init__(
             self,
             DATA_DIR+'zahnle_earth_HNOCS.yaml',
@@ -61,21 +33,81 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         )
         os.remove('tmpfile1234567890.yaml')
 
-        # Adjust default values
-        self.var.autodiff = True # Turn on autodiff
-        self.var.atol = self.atol_avg # Seems to be a good
-        self.var.rtol = 1e-3
-        self.var.conv_min_mix = 1e-10
-        self.var.conv_longdy = 0.03
+        # Save inputs that matter
+        self.planet_radius = planet_radius
+        self.planet_mass = planet_mass
+        self.P_ref = P_ref
 
-    def initialize_to_PT(self, P_in, P_ref, T_in, Kzz_in, metallicity, CtoO):
+        # Parameters using during initialization
+        # The factor of pressure the atmosphere extends
+        # compared to predicted quench points of gases
+        self.BOA_pressure_factor = 10.0
+        # For computing chemical equilibrium at a metallicity.
+        self.m = utils.Metallicity(DATA_DIR+'zahnle_earth_HNOCS_ct.yaml')
+
+        # Parameters for determining steady state
+        self.TOA_pressure_avg = 1.0e-7*1e6 # mean TOA pressure (dynes/cm^2)
+        self.TOA_pressure_min = 1.0e-8*1e6 # min TOA pressure (dynes/cm^2)
+        self.TOA_pressure_max = 5.0e-7*1e6 # max TOA pressure (dynes/cm^2)
+        self.max_dT_tol = 5 # The permitted difference between T in photochem and desired T
+        self.max_dlog10edd_tol = 0.2 # The permitted difference between Kzz in photochem and desired Kzz
+        self.atol_min = 1e-15 # min atol that will be tried
+        self.atol_max = 2e-14 # max atol that will be tried
+        self.atol_avg = 1e-14 # avg atol that is tried
+        self.freq_update_PTKzz = 1000 # step frequency to update PTKzz profile.
+        self.freq_reinit = 10_000 # step frequency to reinitialize integration and change atol
+        self.max_total_step = 100_000 # Maximum total allowed steps before giving up
+        self.min_step_conv = 300 # Min internal steps considered before convergence is allowed
+        self.verbose = True # print information or not?
+        self.freq_print = 100 # Frequency in which to print
+
+        # Values in photochem to adjust
+        self.var.autodiff = True # Turn on autodiff
+        self.var.atol = self.atol_avg
+        self.var.conv_min_mix = 1e-10 # Min mix to consider during convergence check
+        self.var.conv_longdy = 0.03 # threshold relative change that determines convergence
+        self.var.verbose = 0 # No printing
+
+        # Values that will be needed later
+        self.P_clima_grid = None # The climate grid
+        self.metallicity = None
+        self.CtoO = None
+        # Below for interpolation
+        self.log10P_interp = None
+        self.T_interp = None
+        self.log10edd_interp = None
+        self.P_desired = None
+        self.T_desired = None
+        self.Kzz_desired = None
+        # Index of climate grid that is bottom of photochemical grid
+        self.ind_b = None
+
+        # Prevent new attributes
+        self._freeze()
+
+    def __setattr__(self, key, value):
+        if self.__isfrozen and not hasattr(self, key):
+            raise TypeError("%r is a frozen class" % self)
+        object.__setattr__(self, key, value)
+
+    def _freeze(self):
+        self.__isfrozen = True
+
+    def initialize_to_PT(self, P_in, T_in, Kzz_in, metallicity, CtoO):
+
+        # Save inputs
+        self.P_clima_grid = P_in
+        self.metallicity = metallicity
+        self.CtoO = CtoO
 
         # Compute chemical equilibrium along the whole P-T profile
-        m = utils.Metallicity(DATA_DIR+'zahnle_earth_HNOCS_ct.yaml')
-        mix, mubar = m.composition(T_in, P_in, CtoO, metallicity)
+        mix, mubar = self.m.composition(T_in, P_in, CtoO, metallicity)
+
+        if self.TOA_pressure_max > P_in[-1]:
+            raise Exception('The photochemical grid needs to extend above the climate grid')
 
         # Altitude of P-T grid
-        P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P_in, P_ref, T_in, mubar, self.planet_radius, self.planet_mass, self.TOA_pressure_avg)
+        P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P_in, self.P_ref, T_in, mubar, self.planet_radius, self.planet_mass, self.TOA_pressure_avg)
         # If needed, extrapolte Kzz and mixing ratios
         if P1.shape[0] != Kzz_in.shape[0]:
             Kzz1 = np.append(Kzz_in,Kzz_in[-1])
@@ -86,13 +118,13 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             Kzz1 = Kzz_in.copy()
             mix1 = mix
 
-        # Save P-T-Kzz for later interpolation
+        # Save P-T-Kzz for later interpolation and corrections
         self.log10P_interp = np.log10(P1.copy()[::-1])
         self.T_interp = T1.copy()[::-1]
         self.log10edd_interp = np.log10(Kzz1.copy()[::-1])
-        self.P1 = P1
-        self.T1 = T1
-        self.Kzz1 = Kzz1
+        self.P_desired = P1.copy()
+        self.T_desired = T1.copy()
+        self.Kzz_desired = Kzz1.copy()
 
         # The gravity
         grav1 = utils.gravity(self.planet_radius, self.planet_mass, z1)
@@ -102,15 +134,17 @@ class EvoAtmosphereHJ(EvoAtmosphere):
 
         # Bottom of photochemical model will be at a pressure a factor
         # larger than the predicted quench pressure.
-        ind_b = np.argmin(np.abs(P1 - P1[ind]*self.BOA_pressure_factor))
+        if P1[ind]*self.BOA_pressure_factor > P1[0]:
+            raise Exception('BOA in photochemical model wants to be deeper than BOA of climate model.')
+        self.ind_b = np.argmin(np.abs(P1 - P1[ind]*self.BOA_pressure_factor))
         
         # Compute TOA index
         ind_t = np.argmin(np.abs(P1 - self.TOA_pressure_avg))
 
         # Shift z profile so that zero is at photochem BOA
-        z1_p = z1 - z1[ind_b]
+        z1_p = z1 - z1[self.ind_b]
 
-        # Compute the photochemical grid
+        # Calculate the photochemical grid
         z_top = z1_p[ind_t]
         z_bottom = 0.0
         dz = (z_top - z_bottom)/self.var.nz
@@ -130,11 +164,11 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         den_p = P_p/(k_boltz*T_p)
 
         # Compute new planet radius
-        planet_radius_new = self.planet_radius + z1[ind_b]
+        planet_radius_new = self.planet_radius + z1[self.ind_b]
 
         # Update photochemical model grid
-        self.update_planet_mass_radius(self.planet_mass, planet_radius_new)
-        self.update_vertical_grid(TOA_alt=z_top)
+        self.dat.planet_radius = planet_radius_new
+        self.update_vertical_grid(TOA_alt=z_top) # this will update gravity for new planet radius
         self.set_temperature(T_p)
         self.var.edd = Kzz_p
         usol = np.ones(self.wrk.usol.shape)*1e-40
@@ -155,6 +189,63 @@ class EvoAtmosphereHJ(EvoAtmosphere):
 
         self.prep_atmosphere(self.wrk.usol)
 
+    def reinitialize_to_PTX(self, P_in, T_in, Kzz_in, mix):
+        pass
+
+    def return_atmosphere_clima_grid(self):
+
+        # return full atmosphere
+        out = self.return_atmosphere()
+
+        # Interpolate full atmosphere to clima grid
+        sol = {}
+        sol['pressure'] = self.P_clima_grid.copy()
+        log10Pclima = np.log10(self.P_clima_grid[::-1]).copy()
+        log10P = np.log10(out['pressure'][::-1]).copy()
+
+        T = np.interp(log10Pclima, log10P, out['temperature'][::-1].copy())
+        sol['temperature'] = T[::-1].copy()
+
+        Kzz = np.interp(log10Pclima, log10P, np.log10(out['Kzz'][::-1].copy()))
+        sol['Kzz'] = 10.0**Kzz[::-1].copy()
+
+        for key in out:
+            if key not in ['pressure','temperature','Kzz']:
+                tmp = np.log10(np.clip(out[key][::-1].copy(),a_min=1e-100,a_max=np.inf))
+                mix = np.interp(log10Pclima, log10P, tmp)
+                sol[key] = 10.0**mix[::-1].copy()
+
+        return sol
+
+    def return_atmosphere(self, include_deep_atmosphere = True):
+        out = {}
+        out['pressure'] = self.wrk.pressure
+        out['temperature'] = self.var.temperature
+        out['Kzz'] = self.var.edd
+        species_names = self.dat.species_names[:-2]
+        for i,sp in enumerate(species_names):
+            mix = self.wrk.densities[i,:]/self.wrk.density
+            out[sp] = mix
+
+        if not include_deep_atmosphere:
+            return out
+
+        # Prepend the deeper atmosphere, which we will assume is at Equilibrium
+        inds = np.where(self.P_desired > self.wrk.pressure[0])
+        out1 = {}
+        out1['pressure'] = self.P_desired[inds]
+        out1['temperature'] = self.T_desired[inds]
+        out1['Kzz'] = self.Kzz_desired[inds]
+        mix, mubar = self.m.composition(out1['temperature'], out1['pressure'], self.CtoO, self.metallicity)
+        
+        out['pressure'] = np.append(out1['pressure'],out['pressure'])
+        out['temperature'] = np.append(out1['temperature'],out['temperature'])
+        out['Kzz'] = np.append(out1['Kzz'],out['Kzz'])
+        for i,sp in enumerate(species_names):
+            out[sp] = np.append(mix[sp],out[sp])
+
+        return out 
+    
     def photochemical_steady_state(self):
 
         total_step_counter = 0
@@ -217,7 +308,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         
             if not (self.wrk.nsteps % self.freq_update_PTKzz) or (condition1 and not condition2):
                 # After 1000 steps, lets update P,T, edd and vertical grid
-                self.set_press_temp_edd(self.P1,self.T1,self.Kzz1,hydro_pressure=False)
+                self.set_press_temp_edd(self.P_desired,self.T_desired,self.Kzz_desired,hydro_pressure=False)
                 self.update_vertical_grid(TOA_pressure=self.TOA_pressure_avg)
                 self.initialize_stepper(self.wrk.usol)
 
