@@ -824,6 +824,206 @@ species:
     - [117.6, 4.0, 0.0, 0.0, 0.0, 299.25, 368.1]
   note: Estimated from thermodynamic data at 298 K and species C4H2
 
+# We ignore particles, here
+
+# particles:
+# - name: H2Oaer
+#   composition: {H: 2, O: 1}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: H2O
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 18.01534, T-ref: 373.15, P-ref: 1014200.0, T-triple: 273.15,
+#       T-critical: 647.0}
+#     vaporization: {a: 28414210000.0, b: -13997320.0}
+#     sublimation: {a: 27468840000.0, b: 4181527.0}
+#     super-critical: {a: 1793161000000.0, b: 0.0}
+# - name: CO2aer
+#   composition: {C: 1, O: 2}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: CO2
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 44.01, T-ref: 250.0, P-ref: 17843680.0, T-triple: 216.58,
+#       T-critical: 304.13}
+#     vaporization: {a: 4656475000.0, b: -3393595.0}
+#     sublimation: {a: 6564668000.0, b: -3892217.0}
+#     super-critical: {a: 163590800000.0, b: 0.0}
+# - name: S8aer
+#   composition: {S: 8}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: S8
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 256.52, T-ref: 400.0, P-ref: 104.922, T-triple: 392.0,
+#       T-critical: 675.0}
+#     vaporization: {a: 2886561000.0, b: -905383.2}
+#     sublimation: {a: 2700081000.0, b: 3262241.0}
+#     super-critical: {a: 137025500000.0, b: 0.0}
+# - name: H2SO4aer
+#   composition: {H: 2, S: 1, O: 4}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: H2SO4
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 98.079, T-ref: 400.0, P-ref: 104.2249, T-triple: 360.0,
+#       T-critical: 905.0}
+#     vaporization: {a: 10770640000.0, b: -6002994.0}
+#     sublimation: {a: 10770640000.0, b: -6002994.0}
+#     super-critical: {a: 321509500000.0, b: 0.0}
+# - name: NH3aer
+#   composition: {N: 1, H: 3}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: NH3
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 17.031, T-ref: 300.0, P-ref: 10990060.0, T-triple: 195.4,
+#       T-critical: 405.4}
+#     vaporization: {a: 16222880000.0, b: -8552054.0}
+#     sublimation: {a: 18112180000.0, b: 0.0}
+#     super-critical: {a: 748102000000.0, b: 0.0}
+# - name: N2Oaer
+#   composition: {N: 2, O: 1}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: N2O
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 44.0128, T-ref: 185.0, P-ref: 896406.4, T-triple: 182.33,
+#       T-critical: 309.56}
+#     vaporization: {a: 5330803000.0, b: -6536161.0}
+#     sublimation: {a: 6060093000.0, b: -4323191.0}
+#     super-critical: {a: 169425700000.0, b: 0.0}
+# - name: C2H2aer
+#   composition: {C: 2, H: 2}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: C2H2
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 26.0373, T-ref: 200.0, P-ref: 1895409.0, T-triple: 192.4,
+#       T-critical: 308.3}
+#     vaporization: {a: 6989511000.0, b: -2838657.0}
+#     sublimation: {a: 11812830000.0, b: -20473510.0}
+#     super-critical: {a: 284084700000.0, b: 0.0}
+# - name: C2H4aer
+#   composition: {C: 2, H: 4}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: C2H4
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 28.0532, T-ref: 150.0, P-ref: 273492.4, T-triple: 104.0,
+#       T-critical: 282.5}
+#     vaporization: {a: 6736043000.0, b: -9175347.0}
+#     sublimation: {a: 5902191000.0, b: 9592794.0}
+#     super-critical: {a: 221709200000.0, b: 0.0}
+# - name: C2H6aer
+#   composition: {C: 2, H: 6}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: C2H6
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 30.069, T-ref: 200.0, P-ref: 2181454.0, T-triple: 91.0,
+#       T-critical: 305.3}
+#     vaporization: {a: 6328747000.0, b: -6185817.0}
+#     sublimation: {a: 7204982000.0, b: -2441216.0}
+#     super-critical: {a: 241267900000.0, b: 0.0}
+# - name: CH3CNaer
+#   composition: {C: 2, H: 3, N: 1}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: CH3CN
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 41.0519, T-ref: 250.0, P-ref: 8388.388, T-triple: 229.32,
+#       T-critical: 545.0}
+#     vaporization: {a: 8798116000.0, b: -1975835.0}
+#     sublimation: {a: 12475940000.0, b: -7579455.0}
+#     super-critical: {a: 559159600000.0, b: 0.0}
+# - name: HCCCNaer
+#   composition: {H: 1, C: 3, N: 1}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: HCCCN
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 51.048, T-ref: 300.0, P-ref: 581969.2, T-triple: 280.0,
+#       T-critical: 527.0}
+#     vaporization: {a: 5300635000.0, b: 566737.6}
+#     sublimation: {a: 6214864000.0, b: 9665333.0}
+#     super-critical: {a: 420584600000.0, b: 0.0}
+# - name: HCNaer
+#   composition: {H: 1, C: 1, N: 1}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: HCN
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 27.0253, T-ref: 290.0, P-ref: 706429.7, T-triple: 259.0,
+#       T-critical: 456.85}
+#     vaporization: {a: 10212820000.0, b: 1045517.0}
+#     sublimation: {a: 13791170000.0, b: -114728.6}
+#     super-critical: {a: 597879900000.0, b: 0.0}
+# - name: CH4aer
+#   composition: {C: 1, H: 4}
+#   density: 1.0
+#   optical-properties: none
+#   formation: saturation
+#   gas-phase: CH4
+#   saturation:
+#     model: LinearLatentHeat
+#     parameters: {mu: 16.04, T-ref: 100.0, P-ref: 342624.5, T-triple: 90.686,
+#       T-critical: 190.564}
+#     vaporization: {a: 5914179000.0, b: -4388869.0}
+#     sublimation: {a: 8001717000.0, b: -26126280.0}
+#     super-critical: {a: 177924300000.0, b: 0.0}
+# - name: HCaer1
+#   formation: reaction
+#   density: 1.0
+#   composition: {C: 6, H: 2}
+#   optical-properties: khare1984
+#   optical-type: mie
+#   equation: C2H + C4H2 => HCaer1 + H
+#   type: elementary
+#   rate-constant: {A: 1.5e-10, b: 0.0, Ea: 0.0}
+# - name: HCaer2
+#   formation: reaction
+#   density: 1.0
+#   composition: {C: 2, H: 3, N: 2}
+#   optical-properties: khare1984
+#   optical-type: mie
+#   equation: H2CN + HCN => HCaer2
+#   type: elementary
+#   rate-constant: {A: 1.1e-12, b: 0, Ea: 900}
+# - name: HCaer3
+#   formation: reaction
+#   density: 1.0
+#   composition: {C: 7, H: 2, N: 1}
+#   optical-properties: khare1984
+#   optical-type: mie
+#   equation: C4H + HCCCN => HCaer3
+#   type: elementary
+#   rate-constant: {A: 8.6e-16, b: 1.8, Ea: -474}
+
 reactions:
 - equation: H + H (+ M) <=> H2 (+ M)
   type: falloff
@@ -834,63 +1034,50 @@ reactions:
   low-P-rate-constant: {A: 1.29e-29, b: -1.0, Ea: 0.0}
   high-P-rate-constant: {A: 1.0e-12, b: 0.0, Ea: 0.0}
 - equation: H2 + O <=> OH + H
-  type: elementary
   rate-constant: {A: 8.514405e-20, b: 2.67, Ea: 3160.0}
 - equation: H + OH (+ M) <=> H2O (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.050748e-26, b: -2.1, Ea: 0.0}
   high-P-rate-constant: {A: 2.7e-10, b: 0.0, Ea: 75.0}
 - equation: H2 + OH <=> H2O + H
-  type: elementary
   rate-constant: {A: 1.740708e-16, b: 1.6, Ea: 1660.0}
 - equation: OH + OH <=> H2O + O
-  type: elementary
   rate-constant: {A: 2.549944e-15, b: 1.14, Ea: 50.0}
 - equation: OH + OH <=> O2 + H2
-  type: elementary
   rate-constant: {A: 1.799625e-13, b: 0.51, Ea: 25400.0}
 - equation: O + O (+ M) <=> O2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 5.2e-35, b: 0.0, Ea: -900.0}
   high-P-rate-constant: {A: 1.0e-12, b: 0.0, Ea: 0.0}
 - equation: O + OH <=> O2 + H
-  type: elementary
   rate-constant: {A: 2.4e-11, b: 0.0, Ea: 353.0}
 - equation: C + O (+ M) <=> CO (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.088963e-20, b: -3.34, Ea: 0.0}
   high-P-rate-constant: {A: 1.0e-12, b: 0.0, Ea: 0.0}
 - equation: C + O2 <=> CO + O
-  type: elementary
   rate-constant: {A: 1.6e-11, b: 0.0, Ea: 0.0}
 - equation: CO + O (+ M) <=> CO2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.7e-33, b: 0.0, Ea: 1510.0}
   high-P-rate-constant: {A: 1.0e-14, b: 0.0, Ea: 1630.0}
 - equation: CO + OH <=> CO2 + H
-  type: elementary
   rate-constant: {A: 3.662296e-19, b: 1.89, Ea: -583.0}
 - equation: O + CO2 <=> CO + O2
-  type: elementary
   rate-constant: {A: 2.8e-11, b: 0.0, Ea: 26500.0}
 - equation: C + OH <=> CO + H
-  type: elementary
   rate-constant: {A: 6.350853e-12, b: 0.5, Ea: 0.0}
 - equation: H + CO (+ M) <=> HCO (+ M)
   type: falloff
   low-P-rate-constant: {A: 2.221812e-31, b: -0.66, Ea: 825.0}
   high-P-rate-constant: {A: 2.0e-13, b: 0.0, Ea: 1370.0}
 - equation: HCO + O <=> H + CO2
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: HCO + O <=> OH + CO
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: OH + HCO <=> CO + H2O
-  type: elementary
   rate-constant: {A: 1.7e-10, b: 0.0, Ea: 0.0}
 - equation: HCO + H <=> CO + H2
-  type: elementary
   rate-constant: {A: 1.8e-10, b: 0.0, Ea: 0.0}
 - equation: H + HCO (+ M) <=> H2CO (+ M)
   type: falloff
@@ -901,35 +1088,26 @@ reactions:
   low-P-rate-constant: {A: 1.4e-33, b: 0.0, Ea: 32900.0}
   high-P-rate-constant: {A: 5.5e-12, b: 0.0, Ea: 36000.0}
 - equation: HCO + HCO <=> H2CO + CO
-  type: elementary
   rate-constant: {A: 4.5e-11, b: 0.0, Ea: 0.0}
 - equation: H2CO + H <=> HCO + H2
-  type: elementary
   rate-constant: {A: 2.28e-19, b: 2.65, Ea: 766.5}
 - equation: H2CO + OH <=> HCO + H2O
-  type: elementary
   rate-constant: {A: 5.731102e-15, b: 1.18, Ea: -225.0}
 - equation: O + H2CO <=> OH + HCO
-  type: elementary
   rate-constant: {A: 6.855106e-13, b: 0.57, Ea: 1390.0}
 - equation: C + H (+ M) <=> CH (+ M)
   type: falloff
   low-P-rate-constant: {A: 5.0e-34, b: 0.0, Ea: -7100.0}
   high-P-rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: O + CH <=> OH + C
-  type: elementary
   rate-constant: {A: 9.98816e-13, b: 0.5, Ea: 4000.0}
 - equation: O + CH <=> CO + H
-  type: elementary
   rate-constant: {A: 6.6e-11, b: 0.0, Ea: 0.0}
 - equation: CH + O2 <=> CO + OH
-  type: elementary
   rate-constant: {A: 8.3e-11, b: 0.0, Ea: 0.0}
 - equation: CH + CO2 <=> CO + HCO
-  type: elementary
   rate-constant: {A: 5.9e-12, b: 0.0, Ea: 350.0}
 - equation: CH + H <=> H2 + C
-  type: elementary
   rate-constant: {A: 1.3e-10, b: 0.0, Ea: 806.0}
 - equation: H2 + C (+ M) <=> CH2 (+ M)
   type: falloff
@@ -940,22 +1118,16 @@ reactions:
   low-P-rate-constant: {A: 4.105781e-34, b: 0.22, Ea: -6000.0}
   high-P-rate-constant: {A: 1.0e-10, b: 0.0, Ea: 0.0}
 - equation: CH2 + H <=> CH + H2
-  type: elementary
   rate-constant: {A: 4.0e-10, b: 0.0, Ea: 385.0}
 - equation: OH + CH2 <=> H2CO + H
-  type: elementary
   rate-constant: {A: 4.811648e-11, b: 0.12, Ea: -81.4}
 - equation: OH + CH2 <=> H2O + CH
-  type: elementary
   rate-constant: {A: 1.407678e-18, b: 2.02, Ea: 3420.0}
 - equation: CH2 + O <=> HCO + H
-  type: elementary
   rate-constant: {A: 1.2e-10, b: 0.0, Ea: 0.0}
 - equation: O + CH2 <=> CO + H2
-  type: elementary
   rate-constant: {A: 8.0e-11, b: 0.0, Ea: 0.0}
 - equation: O2 + CH2 <=> H2CO + O
-  type: elementary
   rate-constant: {A: 4.1e-11, b: 0.0, Ea: 750.0}
 - equation: CH + H2 (+ M) <=> CH3 (+ M)
   type: falloff
@@ -966,67 +1138,50 @@ reactions:
   low-P-rate-constant: {A: 1.8e-24, b: -2.0, Ea: 0.0}
   high-P-rate-constant: {A: 1.8e-05, b: -2.0, Ea: 0.0}
 - equation: H2 + CH2 <=> CH3 + H
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 5300.0}
 - equation: CH3 + O <=> H2CO + H
-  type: elementary
   rate-constant: {A: 9.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH3 + O <=> HCO + H2
-  type: elementary
   rate-constant: {A: 6.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH3 + OH <=> H2COH + H
-  type: elementary
   rate-constant: {A: 1.066667e-14, b: 1.0, Ea: 1610.0}
 - equation: CH2 + HCO <=> CH3 + CO
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH2 + CH2 <=> CH + CH3
-  type: elementary
   rate-constant: {A: 4.0e-10, b: 0.0, Ea: 5000.0}
 - equation: CH3 + H (+ M) <=> CH4 (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.55214e-23, b: -2.17, Ea: 0.0}
   high-P-rate-constant: {A: 3.5e-10, b: 0.0, Ea: 0.0}
 - equation: CH3 + H2 <=> CH4 + H
-  type: elementary
   rate-constant: {A: 1.140683e-20, b: 2.74, Ea: 4700.0}
 - equation: CH3 + OH <=> CH4 + O
-  type: elementary
   rate-constant: {A: 1.078983e-21, b: 2.75, Ea: 1600.0}
 - equation: CH4 + OH <=> CH3 + H2O
-  type: elementary
   rate-constant: {A: 2.578403e-17, b: 1.83, Ea: 1396.0}
 - equation: CH3 + HCO <=> CH4 + CO
-  type: elementary
   rate-constant: {A: 4.4e-11, b: 0.0, Ea: 0.0}
 - equation: CH3 + H2CO <=> CH4 + HCO
-  type: elementary
   rate-constant: {A: 6.178208e-26, b: 4.4, Ea: 2450.0}
 - equation: CH2 + CH4 <=> CH3 + CH3
-  type: elementary
   rate-constant: {A: 7.1e-12, b: 0.0, Ea: 5052.0}
 - equation: H + H2CO (+ M) <=> CH3O (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.22e-23, b: -3.0, Ea: 2900}
   high-P-rate-constant: {A: 6560.0, b: -5, Ea: 4000}
 - equation: H + CH3O <=> CH3 + OH
-  type: elementary
   rate-constant: {A: 7.7e-11, b: 0.0, Ea: 375.0}
 - equation: H + CH3O <=> H2CO + H2
-  type: elementary
   rate-constant: {A: 3.3e-11, b: 0.0, Ea: 375.0}
 - equation: CO + CH3O <=> CH3 + CO2
-  type: elementary
   rate-constant: {A: 1.33e-11, b: 0.0, Ea: 5940.0}
 - equation: H + H2CO (+ M) <=> H2COH (+ M)
   type: falloff
   low-P-rate-constant: {A: 2.82e-29, b: -1.2, Ea: 2900}
   high-P-rate-constant: {A: 3.0e-12, b: 0.0, Ea: 3500}
 - equation: H + H2COH <=> H2CO + H2
-  type: elementary
   rate-constant: {A: 1.66e-11, b: 0.0, Ea: 0.0}
 - equation: HCO + H2COH <=> H2CO + H2CO
-  type: elementary
   rate-constant: {A: 1.0e-10, b: 0.0, Ea: 0.0}
 - equation: H + CH3O (+ M) <=> CH3OH (+ M)
   type: falloff
@@ -1037,16 +1192,12 @@ reactions:
   low-P-rate-constant: {A: 2.308411e-29, b: 0.04, Ea: 0.0}
   high-P-rate-constant: {A: 2.308411e-10, b: 0.04, Ea: 0.0}
 - equation: O + H2COH <=> H2CO + OH
-  type: elementary
   rate-constant: {A: 7.0e-11, b: 0.0, Ea: 0.0}
 - equation: OH + H2COH <=> H2CO + H2O
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: O + CH3O <=> H2CO + OH
-  type: elementary
   rate-constant: {A: 2.5e-11, b: 0.0, Ea: 0.0}
 - equation: OH + CH3O <=> H2CO + H2O
-  type: elementary
   rate-constant: {A: 5.773503e-22, b: 2.5, Ea: 950.0}
 - equation: H2CO + H2 (+ M) <=> CH3OH (+ M)
   type: falloff
@@ -1057,105 +1208,74 @@ reactions:
   low-P-rate-constant: {A: 0.0004619307, b: -8.2, Ea: 0.0}
   high-P-rate-constant: {A: 1.0e-10, b: 0.0, Ea: 0.0}
 - equation: H + CH3OH <=> CH3O + H2
-  type: elementary
   rate-constant: {A: 8.973108e-18, b: 2.15, Ea: 5650.0}
 - equation: H + CH3OH <=> H2COH + H2
-  type: elementary
   rate-constant: {A: 8.4e-11, b: 0.0, Ea: 3600.0}
 - equation: CH3OH + OH <=> H2O + CH3O
-  type: elementary
   rate-constant: {A: 5.144444e-18, b: 2.0, Ea: 757.0}
 - equation: CH3OH + OH <=> H2O + H2COH
-  type: elementary
   rate-constant: {A: 2.366667e-18, b: 2.0, Ea: -423.0}
 - equation: CH3OH + CH3 <=> CH4 + CH3O
-  type: elementary
   rate-constant: {A: 5.968035e-28, b: 4.7, Ea: 2910.0}
 - equation: CH3 + CH3OH <=> H2COH + CH4
-  type: elementary
   rate-constant: {A: 9.827422e-28, b: 4.9, Ea: 3380.0}
 - equation: CH3O + HCO <=> CH3OH + CO
-  type: elementary
   rate-constant: {A: 1.5e-10, b: 0.0, Ea: 0.0}
 - equation: HCO + H2COH <=> CH3OH + CO
-  type: elementary
   rate-constant: {A: 6.67e-11, b: 0.0, Ea: 0.0}
 - equation: CH3O + CH3O <=> CH3OH + H2CO
-  type: elementary
   rate-constant: {A: 1.0e-10, b: 0.0, Ea: 0.0}
 - equation: O + C2 <=> CO + C
-  type: elementary
   rate-constant: {A: 2.886751e-12, b: 0.5, Ea: 0.0}
 - equation: CH + C <=> C2 + H
-  type: elementary
   rate-constant: {A: 9.641749e-13, b: 0.5, Ea: 0.0}
 - equation: C2 + H2 <=> C2H + H
-  type: elementary
   rate-constant: {A: 1.1e-10, b: 0.0, Ea: 4000.0}
 - equation: C2 + CH4 <=> C2H + CH3
-  type: elementary
   rate-constant: {A: 5.05e-11, b: 0.0, Ea: 4000.0}
 - equation: O + C2H <=> CO + CH
-  type: elementary
   rate-constant: {A: 1.67e-11, b: 0.0, Ea: 0.0}
 - equation: C2H + O2 <=> HCO + CO
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: C2H + H (+ M) <=> C2H2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.725717e-24, b: -1.8, Ea: 0.0}
   high-P-rate-constant: {A: 3.0e-10, b: 0.0, Ea: 0.0}
 - equation: CH2 + CH2 <=> C2H2 + H2
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 400.0}
 - equation: C2H + H2 <=> C2H2 + H
-  type: elementary
   rate-constant: {A: 7.286495e-18, b: 2.22, Ea: 461.0}
 - equation: C2H + CH4 <=> C2H2 + CH3
-  type: elementary
   rate-constant: {A: 1.278281e-18, b: 2.34, Ea: -380.0}
 - equation: C2H2 + O <=> CH2 + CO
-  type: elementary
   rate-constant: {A: 2.0e-17, b: 2.0, Ea: 956.0}
 - equation: C2H + OH <=> CH2 + CO
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: C2H + H2O <=> OH + C2H2
-  type: elementary
   rate-constant: {A: 2.050089e-19, b: 2.7, Ea: 1120.0}
 - equation: OH + C2H2 <=> CH3 + CO
-  type: elementary
   rate-constant: {A: 7.777778e-28, b: 4.0, Ea: 10100.0}
 - equation: H + C2H2 (+ M) <=> C2H3 (+ M)
   type: falloff
   low-P-rate-constant: {A: 3.3e-30, b: 0.0, Ea: 740.0}
   high-P-rate-constant: {A: 9.0e-12, b: 0.0, Ea: 1220.0}
 - equation: CH2 + CH2 <=> C2H3 + H
-  type: elementary
   rate-constant: {A: 2.0e-10, b: 0.0, Ea: 400.0}
 - equation: H + C2H3 <=> H2 + C2H2
-  type: elementary
   rate-constant: {A: 1.6e-10, b: 0.0, Ea: 0.0}
 - equation: C2H3 + OH <=> C2H2 + H2O
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: O + C2H3 <=> OH + C2H2
-  type: elementary
   rate-constant: {A: 1.597886e-12, b: 0.2, Ea: -215.0}
 - equation: O + C2H3 <=> CH3 + CO
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: O2 + C2H3 <=> H2CO + HCO
-  type: elementary
   rate-constant: {A: 9.0e-12, b: 0.0, Ea: 0.0}
 - equation: CH3 + C2H3 <=> C2H2 + CH4
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH2 + C2H3 <=> C2H2 + CH3
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: C2H + C2H3 <=> C2H2 + C2H2
-  type: elementary
   rate-constant: {A: 1.6e-12, b: 0.0, Ea: 0.0}
 - equation: C2H3 + H (+ M) <=> C2H4 (+ M)
   type: falloff
@@ -1166,113 +1286,83 @@ reactions:
   low-P-rate-constant: {A: 2.5e-33, b: 0.0, Ea: 14900.0}
   high-P-rate-constant: {A: 5.0e-13, b: 0.0, Ea: 19600.0}
 - equation: CH2 + CH3 <=> C2H4 + H
-  type: elementary
   rate-constant: {A: 7.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH + CH4 <=> C2H4 + H
-  type: elementary
   rate-constant: {A: 7.6e-11, b: 0.0, Ea: 0.0}
 - equation: C2H3 + H2 <=> C2H4 + H
-  type: elementary
   rate-constant: {A: 5.79355e-14, b: 0.7, Ea: 3630.0}
 - equation: O + C2H4 <=> HCO + CH3
-  type: elementary
   rate-constant: {A: 5.773001e-18, b: 2.08, Ea: 0.0}
 - equation: OH + C2H4 <=> C2H3 + H2O
-  type: elementary
   rate-constant: {A: 2.138405e-25, b: 4.2, Ea: -433.0}
 - equation: OH + C2H4 <=> H2CO + CH3
-  type: elementary
   rate-constant: {A: 2.593845e-25, b: 3.34, Ea: -1400.0}
 - equation: C2H3 + CH4 <=> CH3 + C2H4
-  type: elementary
   rate-constant: {A: 2.086768e-17, b: 1.92, Ea: 2980.0}
 - equation: C2H3 + C2H3 <=> C2H2 + C2H4
-  type: elementary
   rate-constant: {A: 2.4e-11, b: 0.0, Ea: 0.0}
 - equation: H + C2H4 (+ M) <=> C2H5 (+ M)
   type: falloff
   low-P-rate-constant: {A: 7.7e-30, b: 0.0, Ea: 381.0}
   high-P-rate-constant: {A: 4.161791e-16, b: 1.75, Ea: 605.0}
 - equation: H + C2H5 <=> CH3 + CH3
-  type: elementary
   rate-constant: {A: 6.0e-11, b: 0.0, Ea: 0.0}
 - equation: H + C2H5 <=> C2H4 + H2
-  type: elementary
   rate-constant: {A: 3.0e-12, b: 0.0, Ea: 0.0}
 - equation: O + C2H5 <=> H2CO + CH3
-  type: elementary
   rate-constant: {A: 1.1e-10, b: 0.0, Ea: 0.0}
 - equation: C2H5 + OH <=> C2H4 + H2O
-  type: elementary
   rate-constant: {A: 4.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH2 + C2H5 <=> C2H4 + CH3
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH3 + C2H5 <=> C2H4 + CH4
-  type: elementary
   rate-constant: {A: 1.9e-12, b: 0.0, Ea: 0.0}
 - equation: CH3 + CH3 (+ M) <=> C2H6 (+ M)
   type: falloff
   low-P-rate-constant: {A: 3.4992e-07, b: -7.0, Ea: 1390.0}
   high-P-rate-constant: {A: 6.0e-11, b: 0.0, Ea: 0.0}
 - equation: O + C2H6 <=> C2H5 + OH
-  type: elementary
   rate-constant: {A: 1.655071e-15, b: 1.5, Ea: 2920.0}
 - equation: OH + C2H6 <=> C2H5 + H2O
-  type: elementary
   rate-constant: {A: 1.222222e-17, b: 2.0, Ea: 435.0}
 - equation: H + C2H6 <=> H2 + C2H5
-  type: elementary
   rate-constant: {A: 8.981004e-22, b: 3.5, Ea: 2600.0}
 - equation: CH3 + C2H6 <=> C2H5 + CH4
-  type: elementary
   rate-constant: {A: 8.888889e-25, b: 4.0, Ea: 4170.0}
 - equation: C2H + C2H6 <=> C2H2 + C2H5
-  type: elementary
   rate-constant: {A: 3.6e-11, b: 0.0, Ea: 0.0}
 - equation: C2H5 + C2H5 <=> C2H4 + C2H6
-  type: elementary
   rate-constant: {A: 2.4e-12, b: 0.0, Ea: 0.0}
 - equation: C2H6 + C2H3 <=> C2H4 + C2H5
-  type: elementary
   rate-constant: {A: 1.00367e-21, b: 3.3, Ea: 5280.0}
 - equation: H + C4H (+ M) <=> C4H2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.506884e-24, b: -1.5, Ea: 0.0}
   high-P-rate-constant: {A: 5.715768e-07, b: -1.5, Ea: 0.0}
 - equation: C2H + C2H2 <=> C4H2 + H
-  type: elementary
   rate-constant: {A: 3.179808e-11, b: 0.24, Ea: -37.3}
 - equation: H2 + C4H <=> C4H2 + H
-  type: elementary
   rate-constant: {A: 7.5e-11, b: 0.0, Ea: 1560.0}
 - equation: C4H2 + C2H <=> C4H + C2H2
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 5000.0}
 - equation: C2 + C2H2 <=> C4H + H
-  type: elementary
   rate-constant: {A: 3.5e-10, b: 0.0, Ea: 0.0}
 - equation: C2H2 + OH (+ M) <=> C2H2OH (+ M)
   type: falloff
   low-P-rate-constant: {A: 5.04e-25, b: -2.0, Ea: 0.0}
   high-P-rate-constant: {A: 2.3e-12, b: 0.0, Ea: 230.0}
 - equation: C2H2OH + H <=> CH2CO + H2
-  type: elementary
   rate-constant: {A: 2.0e-10, b: 0.0, Ea: 1500.0}
 - equation: C2H2OH + M <=> CH2CHO + M
   type: three-body
   rate-constant: {A: 1.0e-10, b: 0.0, Ea: 1500.0}
 - equation: CH2CHO + H <=> CH2CO + H2
-  type: elementary
   rate-constant: {A: 2.0e-10, b: 0.0, Ea: 1500.0}
 - equation: CH2CHO + O <=> CH2CO + OH
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH2CHO + O <=> CH3 + CO2
-  type: elementary
   rate-constant: {A: 8.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH2CHO + OH <=> CH2CO + H2O
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH2CHO + H (+ M) <=> CH3CHO (+ M)
   type: falloff
@@ -1282,19 +1372,14 @@ reactions:
   type: three-body
   rate-constant: {A: 1.0e-10, b: 0.0, Ea: 11500.0}
 - equation: C2H2 + OH <=> CH2CO + H
-  type: elementary
   rate-constant: {A: 3.563891e-28, b: 4.5, Ea: -500.0}
 - equation: CH2CO + O <=> CH2 + CO2
-  type: elementary
   rate-constant: {A: 3.8e-12, b: 0.0, Ea: 680.0}
 - equation: CH2CO + OH <=> H2COH + CO
-  type: elementary
   rate-constant: {A: 7.2e-12, b: 0.0, Ea: 0.0}
 - equation: CH2CO + OH <=> CH3 + CO2
-  type: elementary
   rate-constant: {A: 5.0e-12, b: 0.0, Ea: 0.0}
 - equation: CH2CO + H <=> CH3 + CO
-  type: elementary
   rate-constant: {A: 1.279806e-15, b: 1.45, Ea: 1400.0}
 - equation: CH2CO + H (+ M) <=> CH2CHO (+ M)
   type: falloff
@@ -1305,13 +1390,10 @@ reactions:
   low-P-rate-constant: {A: 1.38e-30, b: 0.0, Ea: 1320.0}
   high-P-rate-constant: {A: 2.7e-11, b: 0.0, Ea: 755.0}
 - equation: CH2CO + CH2 <=> CO + C2H4
-  type: elementary
   rate-constant: {A: 2.549665e-20, b: 2.8, Ea: 3124.0}
 - equation: 1CH2 + CH2CO <=> CO + C2H4
-  type: elementary
   rate-constant: {A: 2.0e-10, b: 0.0, Ea: 0.0}
 - equation: CH2CO + CH3 <=> CO + C2H5
-  type: elementary
   rate-constant: {A: 4.0e-11, b: 0.0, Ea: 3000.0}
 - equation: C2H4 + OH (+ M) <=> C2H4OH (+ M)
   type: falloff
@@ -1322,23 +1404,18 @@ reactions:
   low-P-rate-constant: {A: 1.383749e-48, b: 4.98, Ea: 1890.0}
   high-P-rate-constant: {A: 1.383749e-29, b: 4.98, Ea: 1890.0}
 - equation: C2H4OH + H <=> C2H3OH + H2
-  type: elementary
   rate-constant: {A: 8.3e-11, b: 0.0, Ea: 0.0}
 - equation: C2H3OH + H <=> CH2CHO + H2
-  type: elementary
   rate-constant: {A: 1.0e-10, b: 0.0, Ea: 2000.0}
 - equation: N + N (+ M) <=> N2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.25e-32, b: 0.0, Ea: 0.0}
   high-P-rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: N + O2 <=> NO + O
-  type: elementary
   rate-constant: {A: 1.49e-14, b: 1.0, Ea: 3270.0}
 - equation: N + NO <=> N2 + O
-  type: elementary
   rate-constant: {A: 3.1e-11, b: 0.0, Ea: 0.0}
 - equation: N + OH <=> NO + H
-  type: elementary
   rate-constant: {A: 3.8e-11, b: 0.0, Ea: 85.0}
 - equation: N + CO2 (+ M) <=> NO + CO (+ M)
   type: falloff
@@ -1349,90 +1426,64 @@ reactions:
   low-P-rate-constant: {A: 3.858312e-35, b: 0.26, Ea: 0.0}
   high-P-rate-constant: {A: 3.858312e-13, b: 0.26, Ea: 0.0}
 - equation: C + NO <=> CO + N
-  type: elementary
   rate-constant: {A: 4.7e-11, b: 0.0, Ea: 0.0}
 - equation: N + H (+ M) <=> NH (+ M)
   type: falloff
   low-P-rate-constant: {A: 6.0e-33, b: 0.0, Ea: 0.0}
   high-P-rate-constant: {A: 6.0e-13, b: 0.0, Ea: 0.0}
 - equation: O + NH <=> OH + N
-  type: elementary
   rate-constant: {A: 1.2e-11, b: 0.0, Ea: 0.0}
 - equation: O + NH <=> NO + H
-  type: elementary
   rate-constant: {A: 1.16e-10, b: 0.0, Ea: 0.0}
 - equation: H + NH <=> N + H2
-  type: elementary
   rate-constant: {A: 3.16e-12, b: 0.0, Ea: 0.0}
 - equation: N + NH <=> N2 + H
-  type: elementary
   rate-constant: {A: 1.063415e-12, b: 0.51, Ea: 9.63}
 - equation: NH + OH <=> H2O + N
-  type: elementary
   rate-constant: {A: 3.302297e-15, b: 1.2, Ea: 0.0}
 - equation: NH + OH <=> NO + H2
-  type: elementary
   rate-constant: {A: 3.32e-11, b: 0.0, Ea: 0.0}
 - equation: NH + NO <=> N2 + OH
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: NH + O2 <=> NO + OH
-  type: elementary
   rate-constant: {A: 7.442762e-16, b: 0.79, Ea: 600.0}
 - equation: CH + NO <=> NH + CO
-  type: elementary
   rate-constant: {A: 2.5e-10, b: 0.0, Ea: 500.0}
 - equation: N + CH2 <=> NH + CH
-  type: elementary
   rate-constant: {A: 1.0e-12, b: 0.0, Ea: 20400.0}
 - equation: NH + CH2 <=> N + CH3
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: NH + CH3 <=> N + CH4
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: N + C2H5 <=> NH + C2H4
-  type: elementary
   rate-constant: {A: 5.5e-11, b: 0.0, Ea: 0.0}
 - equation: NH + C2H3 <=> N + C2H4
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: NH + C2H5 <=> N + C2H6
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: NH + H (+ M) <=> NH2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 6.0e-29, b: -1.0, Ea: 0.0}
   high-P-rate-constant: {A: 6.0e-09, b: -1.0, Ea: 0.0}
 - equation: NH + NH <=> NH2 + N
-  type: elementary
   rate-constant: {A: 9.710635e-22, b: 2.89, Ea: -1020.0}
 - equation: H + NH2 <=> NH + H2
-  type: elementary
   rate-constant: {A: 1.05e-10, b: 0.0, Ea: 4450.0}
 - equation: O + NH2 <=> NH + OH
-  type: elementary
   rate-constant: {A: 1.16e-11, b: 0.0, Ea: 0.0}
 - equation: O + NH2 <=> NO + H2
-  type: elementary
   rate-constant: {A: 8.2e-11, b: 0.0, Ea: 0.0}
 - equation: OH + NH2 <=> NH + H2O
-  type: elementary
   rate-constant: {A: 1.499186e-16, b: 1.5, Ea: -230.0}
 - equation: NH2 + NO <=> N2 + H2O
-  type: elementary
   rate-constant: {A: 4.45583e-05, b: -2.37, Ea: 437.0}
 - equation: NH2 + C2H <=> NH + C2H2
-  type: elementary
   rate-constant: {A: 4.0e-11, b: 0.0, Ea: 0.0}
 - equation: NH + C2H3 <=> NH2 + C2H2
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: NH + C2H5 <=> NH2 + C2H4
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: C2H6 + NH <=> C2H5 + NH2
-  type: elementary
   rate-constant: {A: 1.16e-10, b: 0.0, Ea: 8420.0}
 - equation: NH2 + H (+ M) <=> NH3 (+ M)
   type: falloff
@@ -1443,145 +1494,102 @@ reactions:
   low-P-rate-constant: {A: 1.2e-34, b: 0.0, Ea: -720.0}
   high-P-rate-constant: {A: 1.0e-12, b: 0.0, Ea: 0.0}
 - equation: H2 + NH2 <=> NH3 + H
-  type: elementary
   rate-constant: {A: 2.67607e-21, b: 2.83, Ea: 3640.0}
 - equation: OH + NH2 <=> NH3 + O
-  type: elementary
   rate-constant: {A: 3.202716e-14, b: 0.41, Ea: 250.0}
 - equation: OH + NH3 <=> NH2 + H2O
-  type: elementary
   rate-constant: {A: 8.224846e-17, b: 1.6, Ea: 480.0}
 - equation: NH2 + HCO <=> NH3 + CO
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: NH2 + CH4 <=> NH3 + CH3
-  type: elementary
   rate-constant: {A: 2.392881e-21, b: 3.01, Ea: 5000.0}
 - equation: NH3 + C2H <=> NH2 + C2H2
-  type: elementary
   rate-constant: {A: 3.834926e-09, b: -0.8, Ea: 0.0}
 - equation: NH2 + C2H3 <=> NH3 + C2H2
-  type: elementary
   rate-constant: {A: 4.0e-11, b: 0.0, Ea: 0.0}
 - equation: NH2 + C2H4 <=> NH3 + C2H3
-  type: elementary
   rate-constant: {A: 8.8e-12, b: 0.0, Ea: 5170.0}
 - equation: NH2 + C2H5 <=> NH3 + C2H4
-  type: elementary
   rate-constant: {A: 4.15e-11, b: 0.0, Ea: 0.0}
 - equation: NH2 + C2H6 <=> NH3 + C2H5
-  type: elementary
   rate-constant: {A: 1.61e-11, b: 0.0, Ea: 5560.0}
 - equation: N + CH <=> CN + H
-  type: elementary
   rate-constant: {A: 2.1e-11, b: 0.0, Ea: 0.0}
 - equation: C + NH <=> CN + H
-  type: elementary
   rate-constant: {A: 7.0e-11, b: 0.0, Ea: 0.0}
 - equation: CN + NO <=> N2 + CO
-  type: elementary
   rate-constant: {A: 1.8e-10, b: 0.0, Ea: 4040.0}
 - equation: CN + O2 <=> CO + NO
-  type: elementary
   rate-constant: {A: 3.6e-12, b: 0.0, Ea: -210.0}
 - equation: N + CN <=> N2 + C
-  type: elementary
   rate-constant: {A: 1.0e-10, b: 0.0, Ea: 0.0}
 - equation: C + NO <=> CN + O
-  type: elementary
   rate-constant: {A: 3.3e-11, b: 0.0, Ea: 0.0}
 - equation: O + CN <=> CO + N
-  type: elementary
   rate-constant: {A: 1.7e-11, b: 0.0, Ea: 0.0}
 - equation: H + CN (+ M) <=> HCN (+ M)
   type: falloff
   low-P-rate-constant: {A: 2.478275e-24, b: -2.2, Ea: 567.0}
   high-P-rate-constant: {A: 2.944486e-09, b: -0.5, Ea: 0.0}
 - equation: H2 + CN <=> HCN + H
-  type: elementary
   rate-constant: {A: 4.820603e-19, b: 2.45, Ea: 1130.0}
 - equation: N + HCN <=> N2 + CH
-  type: elementary
   rate-constant: {A: 4.066671e-12, b: 0.23, Ea: 8765.0}
 - equation: N + CH2 <=> HCN + H
-  type: elementary
   rate-constant: {A: 1.7e-11, b: 0.0, Ea: 0.0}
 - equation: N + CH3 <=> HCN + H2
-  type: elementary
   rate-constant: {A: 4.3e-11, b: 0.0, Ea: 420.0}
 - equation: O + HCN <=> NH + CO
-  type: elementary
   rate-constant: {A: 8.935035e-16, b: 1.21, Ea: 3820.0}
 - equation: OH + CN <=> HCN + O
-  type: elementary
   rate-constant: {A: 1.807372e-19, b: 2.57, Ea: 2000.0}
 - equation: H2O + CN <=> HCN + OH
-  type: elementary
   rate-constant: {A: 2.624673e-20, b: 2.54, Ea: 2660.0}
 - equation: HCN + OH <=> CO + NH2
-  type: elementary
   rate-constant: {A: 1.07e-13, b: 0.0, Ea: 5890.0}
 - equation: CN + CH2 <=> CH + HCN
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 1500.0}
 - equation: CN + CH3 <=> HCN + CH2
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 1500.0}
 - equation: CN + CH4 <=> HCN + CH3
-  type: elementary
   rate-constant: {A: 9.81474e-20, b: 2.64, Ea: -220.0}
 - equation: CH + NO <=> O + HCN
-  type: elementary
   rate-constant: {A: 3.3e-12, b: 0.0, Ea: 0.0}
 - equation: N + C2H4 <=> HCN + CH3
-  type: elementary
   rate-constant: {A: 3.32e-14, b: 0.0, Ea: 352.0}
 - equation: CN + C2H4 <=> HCN + C2H3
-  type: elementary
   rate-constant: {A: 2.1e-10, b: 0.0, Ea: 0.0}
 - equation: CN + C2H6 <=> HCN + C2H5
-  type: elementary
   rate-constant: {A: 1.966573e-19, b: 2.77, Ea: -900.0}
 - equation: NH3 + CN <=> NH2 + HCN
-  type: elementary
   rate-constant: {A: 2.9e-11, b: 0.0, Ea: 0.0}
 - equation: HCN + OH (+ M) <=> HCNOH (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.35e-23, b: -3.0, Ea: 1700.0}
   high-P-rate-constant: {A: 6.75e-05, b: -3.0, Ea: 1700.0}
 - equation: HCNOH + H <=> NH3 + CO
-  type: elementary
   rate-constant: {A: 1.5e-10, b: 0.0, Ea: 14400.0}
 - equation: H + HCN (+ M) <=> H2CN (+ M)
   type: falloff
   low-P-rate-constant: {A: 4.51477e-24, b: -2.73, Ea: 3860.0}
   high-P-rate-constant: {A: 5.5e-11, b: 0.0, Ea: 2440.0}
 - equation: N + CH3 <=> H + H2CN
-  type: elementary
   rate-constant: {A: 3.9e-10, b: 0.0, Ea: 420.0}
 - equation: N + C2H5 <=> H2CN + CH3
-  type: elementary
   rate-constant: {A: 5.5e-11, b: 0.0, Ea: 0.0}
 - equation: H2CN + O <=> HCN + OH
-  type: elementary
   rate-constant: {A: 8.3e-11, b: 0.0, Ea: 0.0}
 - equation: H2CN + H <=> HCN + H2
-  type: elementary
   rate-constant: {A: 8.3e-11, b: 0.0, Ea: 0.0}
 - equation: H2CN + OH <=> HCN + H2O
-  type: elementary
   rate-constant: {A: 7.7e-12, b: 0.0, Ea: 0.0}
 - equation: H2CN + CN <=> HCN + HCN
-  type: elementary
   rate-constant: {A: 7.7e-12, b: 0.0, Ea: 0.0}
 - equation: H2CN + NH2 <=> HCN + NH3
-  type: elementary
   rate-constant: {A: 7.7e-12, b: 0.0, Ea: 0.0}
 - equation: H2CN + CH3 <=> HCN + CH4
-  type: elementary
   rate-constant: {A: 7.7e-12, b: 0.0, Ea: 0.0}
 - equation: H2CN + C2H <=> HCN + C2H2
-  type: elementary
   rate-constant: {A: 7.7e-12, b: 0.0, Ea: 0.0}
 - equation: S + S (+ M) <=> S2 (+ M)
   type: falloff
@@ -1592,7 +1600,6 @@ reactions:
   low-P-rate-constant: {A: 9.9e-26, b: -2.0, Ea: 0.0}
   high-P-rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: S + S3 <=> S2 + S2
-  type: elementary
   rate-constant: {A: 4.0e-11, b: 0.0, Ea: 0.0}
 - equation: S + S3 (+ M) <=> S4 (+ M)
   type: falloff
@@ -1603,7 +1610,6 @@ reactions:
   low-P-rate-constant: {A: 9.0e-26, b: -2.0, Ea: 0.0}
   high-P-rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: S + S4 <=> S2 + S3
-  type: elementary
   rate-constant: {A: 4.0e-11, b: 0.0, Ea: 500.0}
 - equation: S4 + S4 (+ M) <=> S8 (+ M)
   type: falloff
@@ -1614,43 +1620,30 @@ reactions:
   low-P-rate-constant: {A: 1.0e-32, b: 0.0, Ea: 0.0}
   high-P-rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: S + HS <=> S2 + H
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: H + HS <=> S + H2
-  type: elementary
   rate-constant: {A: 5.535239e-13, b: 0.7, Ea: 0.0}
 - equation: HS + HS <=> S2 + H2
-  type: elementary
   rate-constant: {A: 1.3e-11, b: 0.0, Ea: 20000.0}
 - equation: H + S3 <=> HS + S2
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 500.0}
 - equation: H + S4 <=> HS + S3
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 500.0}
 - equation: O + HS <=> OH + S
-  type: elementary
   rate-constant: {A: 3.787694e-13, b: 0.67, Ea: 956.0}
 - equation: HS + OH <=> H2O + S
-  type: elementary
   rate-constant: {A: 4.0e-12, b: 0.0, Ea: 240.0}
 - equation: S + CH <=> HS + C
-  type: elementary
   rate-constant: {A: 9.98816e-13, b: 0.5, Ea: 4000.0}
 - equation: S + NH <=> HS + N
-  type: elementary
   rate-constant: {A: 9.98816e-13, b: 0.5, Ea: 4000.0}
 - equation: NH2 + HS <=> NH3 + S
-  type: elementary
   rate-constant: {A: 5.0e-12, b: 0.0, Ea: 500.0}
 - equation: HS + CH2 <=> S + CH3
-  type: elementary
   rate-constant: {A: 4.0e-12, b: 0.0, Ea: 500.0}
 - equation: HS + CH3 <=> S + CH4
-  type: elementary
   rate-constant: {A: 4.0e-11, b: 0.0, Ea: 500.0}
 - equation: S + HCO <=> HS + CO
-  type: elementary
   rate-constant: {A: 6.0e-11, b: 0.0, Ea: 0.0}
 - equation: H + HS (+ M) <=> H2S (+ M)
   type: falloff
@@ -1661,329 +1654,234 @@ reactions:
   low-P-rate-constant: {A: 7.122926e-27, b: -1.9, Ea: 8140.0}
   high-P-rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: H + H2S <=> HS + H2
-  type: elementary
   rate-constant: {A: 5.726191e-17, b: 1.94, Ea: 455.0}
 - equation: HS + HS <=> H2S + S
-  type: elementary
   rate-constant: {A: 2.716406e-12, b: 0.2, Ea: 0.0}
 - equation: O + H2S <=> HS + OH
-  type: elementary
   rate-constant: {A: 9.2e-12, b: 0.0, Ea: 1800.0}
 - equation: OH + H2S <=> H2O + HS
-  type: elementary
   rate-constant: {A: 6.1e-12, b: 0.0, Ea: 80.6}
 - equation: HS + HCO <=> H2S + CO
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH2 + H2S <=> CH3 + HS
-  type: elementary
   rate-constant: {A: 2.5e-11, b: 0.0, Ea: 746.0}
 - equation: HS + CH4 <=> CH3 + H2S
-  type: elementary
   rate-constant: {A: 3.06e-12, b: 0.0, Ea: 8260.0}
 - equation: O + HS <=> SO + H
-  type: elementary
   rate-constant: {A: 7.0e-11, b: 0.0, Ea: 0.0}
 - equation: S + OH <=> H + SO
-  type: elementary
   rate-constant: {A: 6.6e-11, b: 0.0, Ea: 0.0}
 - equation: O + S2 <=> SO + S
-  type: elementary
   rate-constant: {A: 1.1e-11, b: 0.0, Ea: 0.0}
 - equation: S + O2 <=> SO + O
-  type: elementary
-  rate-constant: {A: 1.6e-12, b: 0, Ea: -100.0}
+  rate-constant: {A: 3.21e-16, b: 1.35, Ea: -285.8}
 - equation: S3 + O <=> S2 + SO
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 500.0}
 - equation: S4 + O <=> S3 + SO
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 500.0}
 - equation: N + SO <=> NO + S
-  type: elementary
   rate-constant: {A: 1.49e-14, b: 1.0, Ea: 3270.0}
 - equation: SO + O (+ M) <=> SO2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.139185e-25, b: -2.17, Ea: 0.0}
   high-P-rate-constant: {A: 5.3e-11, b: 0.0, Ea: 0.0}
 - equation: SO + SO <=> S + SO2
-  type: elementary
   rate-constant: {A: 5.0e-13, b: 0.0, Ea: 1500.0}
 - equation: O2 + SO <=> SO2 + O
-  type: elementary
   rate-constant: {A: 3.8e-12, b: 0.0, Ea: 3710.0}
 - equation: OH + SO <=> SO2 + H
-  type: elementary
   rate-constant: {A: 1.899381e-07, b: -1.35, Ea: 0.0}
 - equation: H + SO (+ M) <=> HSO (+ M)
   type: falloff
   low-P-rate-constant: {A: 7.431425e-34, b: 0.28, Ea: 0.0}
   high-P-rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: H + HSO <=> HS + OH
-  type: elementary
   rate-constant: {A: 7.0e-11, b: 0.0, Ea: 500.0}
 - equation: H + HSO <=> H2 + SO
-  type: elementary
   rate-constant: {A: 6.0e-11, b: 0.0, Ea: 1000.0}
 - equation: H + HSO <=> H2O + S
-  type: elementary
   rate-constant: {A: 6.0e-11, b: 0.0, Ea: 3870.0}
 - equation: H2S + O <=> H + HSO
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 3850.0}
 - equation: OH + HSO <=> H2O + SO
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 300.0}
 - equation: HS + HSO <=> H2S + SO
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 500.0}
 - equation: O + HSO <=> OH + SO
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 500.0}
 - equation: O + HSO <=> HS + O2
-  type: elementary
   rate-constant: {A: 1.2e-10, b: 0.0, Ea: 500.0}
 - equation: S + HSO <=> HS + SO
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 500.0}
 - equation: SO + HCO <=> HSO + CO
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: S + CO (+ M) <=> OCS (+ M)
   type: falloff
   low-P-rate-constant: {A: 9.295262e-33, b: -0.57, Ea: 0.0}
   high-P-rate-constant: {A: 3.0e-14, b: 0.0, Ea: 0.0}
 - equation: O + OCS <=> CO + SO
-  type: elementary
   rate-constant: {A: 7.83e-11, b: 0.0, Ea: 2620.0}
 - equation: HS + CO <=> OCS + H
-  type: elementary
   rate-constant: {A: 4.15e-14, b: 0.0, Ea: 7661.0}
 - equation: OCS + S <=> CO + S2
-  type: elementary
   rate-constant: {A: 6.497934e-20, b: 2.57, Ea: 1180.0}
 - equation: O + OCS <=> S + CO2
-  type: elementary
   rate-constant: {A: 8.33e-11, b: 0.0, Ea: 5530.0}
 - equation: OCS + OH <=> CO2 + HS
-  type: elementary
   rate-constant: {A: 1.1e-13, b: 0.0, Ea: 1200.0}
 - equation: S + HCO <=> OCS + H
-  type: elementary
   rate-constant: {A: 6.0e-11, b: 0.0, Ea: 0.0}
 - equation: CO + S3 <=> S2 + OCS
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 10000.0}
 - equation: S + CH <=> H + CS
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 0.0}
 - equation: C + HS <=> CS + H
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 0.0}
 - equation: N + CS <=> CN + S
-  type: elementary
   rate-constant: {A: 2.193931e-12, b: 0.5, Ea: 1160.0}
 - equation: O + CS <=> CO + S
-  type: elementary
   rate-constant: {A: 2.7e-10, b: 0.0, Ea: 760.0}
 - equation: C + SO <=> CS + O
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: OH + CS <=> OCS + H
-  type: elementary
   rate-constant: {A: 2.0e-13, b: 0.0, Ea: 0.0}
 - equation: CH2 + S <=> CS + H2
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 0.0}
 - equation: CS + S (+ M) <=> CS2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 7.295398e-18, b: -4.5, Ea: 0.0}
   high-P-rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: CS2 + S <=> CS + S2
-  type: elementary
   rate-constant: {A: 2.8e-10, b: 0.0, Ea: 5920.0}
 - equation: CS + HS <=> CS2 + H
-  type: elementary
   rate-constant: {A: 1.924501e-17, b: 1.5, Ea: -250.0}
 - equation: CS2 + O <=> CS + SO
-  type: elementary
   rate-constant: {A: 5.27e-11, b: 0.0, Ea: 822.0}
 - equation: CS2 + O <=> OCS + S
-  type: elementary
   rate-constant: {A: 4.73e-12, b: 0.0, Ea: 822.0}
 - equation: CS2 + O <=> CO + S2
-  type: elementary
   rate-constant: {A: 1.78e-12, b: 0.0, Ea: 822.0}
 - equation: H + CS (+ M) <=> HCS (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.5e-30, b: -1.0, Ea: 0.0}
   high-P-rate-constant: {A: 1.5e-09, b: -1.0, Ea: 0.0}
 - equation: S + CH2 <=> HCS + H
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: S + HCS <=> CS2 + H
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 0.0}
 - equation: S + HCS <=> CS + HS
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: S2 + CH <=> HCS + S
-  type: elementary
   rate-constant: {A: 4.0e-12, b: 0.0, Ea: 0.0}
 - equation: HCS + H <=> CS + H2
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: HCS + CH3 <=> CS + CH4
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 0.0}
 - equation: HCS + C2H <=> CS + C2H2
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 0.0}
 - equation: HCS + OH <=> CS + H2O
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 0.0}
 - equation: 1CH2 + H2 <=> CH3 + H
-  type: elementary
   rate-constant: {A: 1.05e-10, b: 0.0, Ea: 0.0}
 - equation: OH + CH3 <=> 1CH2 + H2O
-  type: elementary
   rate-constant: {A: 1.2e-10, b: 0.0, Ea: 1400.0}
 - equation: 1CH2 + H2 <=> CH2 + H2
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: 1CH2 + CO <=> CH2 + CO
-  type: elementary
   rate-constant: {A: 4.7e-11, b: 0.0, Ea: -60.0}
 - equation: 1CH2 + CO (+ M) <=> CH2CO (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.163381e-11, b: -7.2, Ea: 1550.0}
   high-P-rate-constant: {A: 1163381000.0, b: -7.2, Ea: 1550.0}
 - equation: 1CH2 + CH4 <=> CH3 + CH3
-  type: elementary
   rate-constant: {A: 3.6e-11, b: 0.0, Ea: 0.0}
 - equation: 1CH2 + NH3 <=> CH3 + NH2
-  type: elementary
   rate-constant: {A: 3.6e-11, b: 0.0, Ea: 0.0}
 - equation: 1CH2 + H <=> CH + H2
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: 1CH2 + H <=> CH2 + H
-  type: elementary
   rate-constant: {A: 8.0e-12, b: 0.0, Ea: 0.0}
 - equation: 1CH2 + N2 <=> CH2 + N2
-  type: elementary
   rate-constant: {A: 1.8e-11, b: 0.0, Ea: -110.0}
 - equation: 1CH2 + CO2 <=> CH2 + CO2
-  type: elementary
   rate-constant: {A: 7.4e-11, b: 0.0, Ea: -120.0}
 - equation: 1CH2 + CO2 <=> H2CO + CO
-  type: elementary
   rate-constant: {A: 3.9e-14, b: 0.0, Ea: 0.0}
 - equation: O1D + H2 <=> OH + H
-  type: elementary
   rate-constant: {A: 1.5e-10, b: 0.0, Ea: 0.0}
 - equation: O1D + CH4 <=> CH3 + OH
-  type: elementary
   rate-constant: {A: 1.2e-10, b: 0.0, Ea: 0.0}
 - equation: O1D + CH4 <=> H2COH + H
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: O1D + CO <=> O + CO
-  type: elementary
   rate-constant: {A: 4.7e-11, b: 0.0, Ea: -60.0}
 - equation: O1D + H2O <=> OH + OH
-  type: elementary
   rate-constant: {A: 2.2e-10, b: 0.0, Ea: 0.0}
 - equation: O1D + O2 <=> O + O2
-  type: elementary
   rate-constant: {A: 3.2e-11, b: 0.0, Ea: -70.0}
 - equation: O1D + N2 <=> O + N2
-  type: elementary
   rate-constant: {A: 1.8e-11, b: 0.0, Ea: -110.0}
 - equation: O1D + CO (+ M) <=> CO2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 0.0, b: 0.0, Ea: 0.0}
   high-P-rate-constant: {A: 0.0, b: 0.0, Ea: 0.0}
 - equation: O1D + CO2 <=> CO2 + O
-  type: elementary
   rate-constant: {A: 7.4e-11, b: 0.0, Ea: -120.0}
 - equation: CO + CH (+ M) <=> HCCO (+ M)
   type: falloff
   low-P-rate-constant: {A: 2.136878e-25, b: -1.9, Ea: 0.0}
   high-P-rate-constant: {A: 1.664552e-09, b: -0.4, Ea: 0.0}
 - equation: C2H2 + O <=> H + HCCO
-  type: elementary
   rate-constant: {A: 1.333333e-17, b: 2.0, Ea: 956.0}
 - equation: H + HCCO <=> CH2 + CO
-  type: elementary
   rate-constant: {A: 1.7e-10, b: 0.0, Ea: 0.0}
 - equation: H2 + HCCO <=> CH2CO + H
-  type: elementary
   rate-constant: {A: 2.2e-11, b: 0.0, Ea: 2000.0}
 - equation: O + HCCO <=> CH + CO2
-  type: elementary
   rate-constant: {A: 4.9e-11, b: 0.0, Ea: 561.0}
 - equation: O + HCCO <=> HCO + CO
-  type: elementary
   rate-constant: {A: 1.6e-10, b: 0.0, Ea: 0.0}
 - equation: CH3 + HCCO <=> C2H4 + CO
-  type: elementary
   rate-constant: {A: 3.3e-12, b: 0.0, Ea: 0.0}
 - equation: C2H + O2 <=> O + HCCO
-  type: elementary
   rate-constant: {A: 1.0e-12, b: 0.0, Ea: 0.0}
 - equation: NO + HCCO <=> HCN + CO2
-  type: elementary
   rate-constant: {A: 6.199253e-10, b: -0.75, Ea: -90.2}
 - equation: O + HCN <=> H + NCO
-  type: elementary
   rate-constant: {A: 3.265636e-16, b: 1.47, Ea: 3780.0}
 - equation: O + NCO <=> CO + NO
-  type: elementary
   rate-constant: {A: 7.5e-11, b: 0.0, Ea: 0.0}
 - equation: CN + OH <=> H + NCO
-  type: elementary
   rate-constant: {A: 7.0e-11, b: 0.0, Ea: 0.0}
 - equation: CN + O2 <=> O + NCO
-  type: elementary
   rate-constant: {A: 1.2e-11, b: 0.0, Ea: -210.0}
 - equation: H + NCO <=> CO + NH
-  type: elementary
   rate-constant: {A: 2.2e-11, b: 0.0, Ea: 0.0}
 - equation: N + NCO <=> N2 + CO
-  type: elementary
   rate-constant: {A: 3.3e-11, b: 0.0, Ea: 0.0}
 - equation: OH + NCO <=> NO + HCO
-  type: elementary
   rate-constant: {A: 1.8e-11, b: 0.0, Ea: 5700.0}
 - equation: CH + NO <=> H + NCO
-  type: elementary
   rate-constant: {A: 4.4e-11, b: 0.0, Ea: 0.0}
 - equation: NH + CO (+ M) <=> HNCO (+ M)
   type: falloff
   low-P-rate-constant: {A: 3.0e-33, b: 0.0, Ea: 3500.0}
   high-P-rate-constant: {A: 3.0e-14, b: 0.0, Ea: 3500.0}
 - equation: OH + HCN <=> H + HNCO
-  type: elementary
   rate-constant: {A: 8.993633e-30, b: 4.71, Ea: -248.0}
 - equation: H2 + NCO <=> H + HNCO
-  type: elementary
   rate-constant: {A: 2.062295e-18, b: 2.12, Ea: 5110.0}
 - equation: OH + NCO <=> O + HNCO
-  type: elementary
   rate-constant: {A: 3.768912e-20, b: 2.51, Ea: 2975.0}
 - equation: OH + HNCO <=> H2O + NCO
-  type: elementary
   rate-constant: {A: 1.047778e-18, b: 2.0, Ea: 1290.0}
 - equation: H + HNCO <=> NH2 + CO
-  type: elementary
   rate-constant: {A: 3.690159e-17, b: 1.7, Ea: 1950.0}
 - equation: H + HNCO (+ M) <=> HCNOH (+ M)
   type: falloff
   low-P-rate-constant: {A: 9.0e-27, b: -2.0, Ea: 4810.0}
   high-P-rate-constant: {A: 1.0e-12, b: 0.0, Ea: 4810.0}
 - equation: H + HCNOH <=> H2 + HNCO
-  type: elementary
   rate-constant: {A: 1.5e-10, b: 0.0, Ea: 10800.0}
 - equation: H + HNCO (+ M) <=> NH2CO (+ M)
   type: falloff
@@ -1997,472 +1895,342 @@ reactions:
   type: three-body
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 10800.0}
 - equation: NH2CO + H <=> H2 + HNCO
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 4000.0}
 - equation: NH2CO + H <=> NH3 + CO
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 4000.0}
 - equation: NH2CO + O <=> OH + HNCO
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 4000.0}
 - equation: NH2CO + O <=> NH2 + CO2
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 4000.0}
 - equation: H + N2 (+ M) <=> NNH (+ M)
   type: falloff
   low-P-rate-constant: {A: 9.191661e-32, b: -0.6, Ea: 7820.0}
   high-P-rate-constant: {A: 9.191661e-09, b: -0.6, Ea: 7820.0}
 - equation: NNH + H <=> N2 + H2
-  type: elementary
   rate-constant: {A: 1.67e-10, b: 0.0, Ea: 0.0}
 - equation: NH2 + N <=> NNH + H
-  type: elementary
   rate-constant: {A: 1.2e-10, b: 0.0, Ea: 0.0}
 - equation: NNH + O <=> NH + NO
-  type: elementary
   rate-constant: {A: 2.6e-11, b: 0.0, Ea: 0.0}
 - equation: NNH + O <=> N2 + OH
-  type: elementary
   rate-constant: {A: 1.6e-11, b: 0.0, Ea: 0.0}
 - equation: NNH + H (+ M) <=> N2H2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 2.7e-26, b: -2.0, Ea: 500.0}
   high-P-rate-constant: {A: 2.7e-06, b: -2.0, Ea: 500.0}
 - equation: H + N2H2 <=> NNH + H2
-  type: elementary
   rate-constant: {A: 1.384425e-19, b: 2.63, Ea: -115.0}
 - equation: OH + N2H2 <=> NNH + H2O
-  type: elementary
   rate-constant: {A: 9.607745e-23, b: 3.4, Ea: -686.0}
 - equation: NH + NH2 <=> N2H2 + H
-  type: elementary
   rate-constant: {A: 2.494153e-09, b: -0.5, Ea: 0.0}
 - equation: NH2 + NH2 <=> N2H2 + H2
-  type: elementary
   rate-constant: {A: 1.3e-12, b: 0.0, Ea: 0.0}
 - equation: N + NH3 <=> N2H2 + H
-  type: elementary
   rate-constant: {A: 7.42e-12, b: 0.0, Ea: 4830.0}
 - equation: H + O2 (+ M) <=> HO2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.581907e-27, b: -1.8, Ea: 0.0}
   high-P-rate-constant: {A: 7.5e-11, b: 0.0, Ea: 0.0}
 - equation: H + HO2 <=> H2 + O2
-  type: elementary
   rate-constant: {A: 5.6e-12, b: 0.0, Ea: 0.0}
 - equation: H + HO2 <=> H2O + O
-  type: elementary
   rate-constant: {A: 2.4e-12, b: 0.0, Ea: 0.0}
 - equation: H + HO2 <=> OH + OH
-  type: elementary
   rate-constant: {A: 7.2e-11, b: 0.0, Ea: 0.0}
 - equation: OH + HO2 <=> H2O + O2
-  type: elementary
   rate-constant: {A: 4.8e-11, b: 0.0, Ea: -250.0}
 - equation: HO2 + O <=> OH + O2
-  type: elementary
   rate-constant: {A: 2.7e-11, b: 0.0, Ea: -240.0}
 - equation: HCO + O2 <=> HO2 + CO
-  type: elementary
   rate-constant: {A: 5.2e-12, b: 0.0, Ea: 0.0}
 - equation: HS + HO2 <=> H2S + O2
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: S + HO2 <=> HS + O2
-  type: elementary
   rate-constant: {A: 5.0e-12, b: 0.0, Ea: 0.0}
 - equation: S + HO2 <=> SO + OH
-  type: elementary
   rate-constant: {A: 5.0e-12, b: 0.0, Ea: 0.0}
 - equation: SO + HO2 <=> HSO + O2
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: H2S + HO2 (+ M) <=> H2O + HSO (+ M)
   type: falloff
   low-P-rate-constant: {A: 0.0, b: 0.0, Ea: 0.0}
   high-P-rate-constant: {A: 0.0, b: 0.0, Ea: 0.0}
 - equation: HO2 + C2H <=> O2 + C2H2
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: HO2 + CO <=> OH + CO2
-  type: elementary
   rate-constant: {A: 2.5e-10, b: 0.0, Ea: 11900.0}
 - equation: CH3O + O2 <=> H2CO + HO2
-  type: elementary
   rate-constant: {A: 7.2e-14, b: 0.0, Ea: 1080.0}
 - equation: C2H3 + O2 <=> C2H2 + HO2
-  type: elementary
   rate-constant: {A: 8.724021e-09, b: -1.26, Ea: 1660.0}
 - equation: OH + OH (+ M) <=> H2O2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 6.615247e-29, b: -0.8, Ea: 0.0}
   high-P-rate-constant: {A: 2.6e-11, b: 0.0, Ea: 0.0}
-- equation: HO2 + HO2 (+ M) <=> H2O2 + O2 (+ M)
-  type: falloff
-  low-P-rate-constant: {A: 1.9e-33, b: 0.0, Ea: -980.0}
-  high-P-rate-constant: {A: 2.2e-14, b: 0.0, Ea: -60.0}
+- equation: HO2 + HO2 <=> H2O2 + O2
+  rate-constant: {A: 3.19e-19, b: 2.01, Ea: -1274.3}
 - equation: H2CO + HO2 <=> HCO + H2O2
-  type: elementary
   rate-constant: {A: 6.735753e-20, b: 2.5, Ea: 5140.0}
 - equation: H2O2 + H <=> H2 + HO2
-  type: elementary
   rate-constant: {A: 2.8e-12, b: 0.0, Ea: 1890.0}
 - equation: H2O2 + H <=> H2O + OH
-  type: elementary
   rate-constant: {A: 1.7e-11, b: 0.0, Ea: 1800.0}
 - equation: H2O2 + OH <=> HO2 + H2O
-  type: elementary
   rate-constant: {A: 2.9e-12, b: 0.0, Ea: 160.0}
 - equation: H2O2 + O <=> OH + HO2
-  type: elementary
   rate-constant: {A: 1.4e-12, b: 0.0, Ea: 2000.0}
 - equation: H2O2 + CH3 <=> CH4 + HO2
-  type: elementary
   rate-constant: {A: 2.0e-14, b: 0.0, Ea: -300.0}
 - equation: O + O2 (+ M) <=> O3 (+ M)
   type: falloff
   low-P-rate-constant: {A: 2.989029e-28, b: -2.3, Ea: 0.0}
   high-P-rate-constant: {A: 2.8e-11, b: 0.0, Ea: 0.0}
 - equation: O + O3 <=> O2 + O2
-  type: elementary
   rate-constant: {A: 8.0e-12, b: 0.0, Ea: 2060.0}
 - equation: H + O3 <=> OH + O2
-  type: elementary
   rate-constant: {A: 1.4e-10, b: 0.0, Ea: 470.0}
 - equation: OH + O3 <=> HO2 + O2
-  type: elementary
   rate-constant: {A: 1.6e-12, b: 0.0, Ea: 940.0}
 - equation: CH3 + O3 <=> H2CO + HO2
-  type: elementary
   rate-constant: {A: 5.1e-12, b: 0.0, Ea: 210.0}
 - equation: O1D + O3 <=> O2 + O2
-  type: elementary
   rate-constant: {A: 1.2e-10, b: 0.0, Ea: 0.0}
 - equation: S + O3 <=> SO + O2
-  type: elementary
   rate-constant: {A: 1.2e-11, b: 0.0, Ea: 0.0}
 - equation: SO + O3 <=> SO2 + O2
-  type: elementary
   rate-constant: {A: 4.5e-12, b: 0.0, Ea: 1170.0}
 - equation: HS + O3 <=> HSO + O2
-  type: elementary
   rate-constant: {A: 9.5e-12, b: 0.0, Ea: 280.0}
 - equation: CS + O3 <=> OCS + O2
-  type: elementary
   rate-constant: {A: 3.0e-16, b: 0.0, Ea: 0.0}
 - equation: H + NO (+ M) <=> HNO (+ M)
   type: falloff
   low-P-rate-constant: {A: 9.493211e-29, b: -1.17, Ea: 210.0}
   high-P-rate-constant: {A: 2.349956e-09, b: -0.4, Ea: 0.0}
 - equation: HCO + NO <=> HNO + CO
-  type: elementary
   rate-constant: {A: 1.3e-11, b: 0.0, Ea: 0.0}
 - equation: NH + OH <=> HNO + H
-  type: elementary
   rate-constant: {A: 3.3e-11, b: 0.0, Ea: 0.0}
 - equation: NH + O2 <=> HNO + O
-  type: elementary
   rate-constant: {A: 7.555556e-19, b: 2.0, Ea: 3270.0}
 - equation: NH2 + O <=> HNO + H
-  type: elementary
   rate-constant: {A: 7.5e-11, b: 0.0, Ea: 0.0}
 - equation: NH2 + O2 <=> HNO + OH
-  type: elementary
   rate-constant: {A: 1.7e-11, b: 0.0, Ea: 13200.0}
 - equation: CH3O + NO <=> HNO + H2CO
-  type: elementary
   rate-constant: {A: 2.167928e-10, b: -0.7, Ea: 0.0}
 - equation: H + HNO <=> H2 + NO
-  type: elementary
   rate-constant: {A: 1.126464e-13, b: 0.94, Ea: 250.0}
 - equation: O + HNO <=> OH + NO
-  type: elementary
   rate-constant: {A: 3.8e-11, b: 0.0, Ea: 0.0}
 - equation: OH + HNO <=> H2O + NO
-  type: elementary
   rate-constant: {A: 1.917463e-15, b: 1.2, Ea: 168.0}
 - equation: H2 + HNO <=> H2O + NH
-  type: elementary
   rate-constant: {A: 1.66e-10, b: 0.0, Ea: 8060.0}
 - equation: CH3 + HNO <=> CH4 + NO
-  type: elementary
   rate-constant: {A: 2.42415e-13, b: 0.76, Ea: 176.0}
 - equation: CH3O + HNO (+ M) <=> CH3OH + NO (+ M)
   type: falloff
   low-P-rate-constant: {A: 0.0, b: 0.0, Ea: 0.0}
   high-P-rate-constant: {A: 0.0, b: 0.0, Ea: 0.0}
 - equation: CN + HNO <=> HCN + NO
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: CO + HNO <=> NH + CO2
-  type: elementary
   rate-constant: {A: 3.3e-12, b: 0.0, Ea: 6190.0}
 - equation: NH2 + HNO <=> NH3 + NO
-  type: elementary
   rate-constant: {A: 5.959444e-17, b: 1.63, Ea: -630.0}
 - equation: O1D + N2 (+ M) <=> N2O (+ M)
   type: falloff
   low-P-rate-constant: {A: 2.8e-36, b: 0.0, Ea: 0.0}
   high-P-rate-constant: {A: 3.4e-16, b: 0.0, Ea: 0.0}
 - equation: NO + HNO <=> N2O + OH
-  type: elementary
   rate-constant: {A: 1.879598e-28, b: 4.33, Ea: 12600.0}
 - equation: HNO + HNO <=> N2O + H2O
-  type: elementary
   rate-constant: {A: 5.185185e-27, b: 4.0, Ea: 600.0}
 - equation: NH + NO <=> N2O + H
-  type: elementary
   rate-constant: {A: 4.0e-11, b: 0.0, Ea: 0.0}
 - equation: NNH + O <=> N2O + H
-  type: elementary
   rate-constant: {A: 9.0e-11, b: 0.0, Ea: 0.0}
 - equation: NO + NCO <=> N2O + CO
-  type: elementary
   rate-constant: {A: 1.851136e-08, b: -1.03, Ea: 420.0}
 - equation: CN + NO2 <=> N2O + CO
-  type: elementary
   rate-constant: {A: 7.1e-12, b: 0.0, Ea: 0.0}
 - equation: H + N2O <=> N2 + OH
-  type: elementary
   rate-constant: {A: 1.6e-10, b: 0.0, Ea: 7600.0}
 - equation: O + N2O <=> NO + NO
-  type: elementary
   rate-constant: {A: 1.5e-10, b: 0.0, Ea: 14000.0}
 - equation: O + N2O <=> N2 + O2
-  type: elementary
   rate-constant: {A: 6.0e-12, b: 0.0, Ea: 8000.0}
 - equation: OH + N2O <=> HO2 + N2
-  type: elementary
   rate-constant: {A: 2.032299e-26, b: 4.72, Ea: 18400.0}
 - equation: O1D + N2O <=> N2 + O2
-  type: elementary
   rate-constant: {A: 4.9e-11, b: 0.0, Ea: 0.0}
 - equation: O1D + N2O <=> NO + NO
-  type: elementary
   rate-constant: {A: 6.7e-11, b: 0.0, Ea: 0.0}
 - equation: NO + O (+ M) <=> NO2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 4.676537e-28, b: -1.5, Ea: 0.0}
   high-P-rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: NO + O3 <=> NO2 + O2
-  type: elementary
   rate-constant: {A: 1.4e-12, b: 0.0, Ea: 1310.0}
 - equation: NO + HO2 <=> NO2 + OH
-  type: elementary
   rate-constant: {A: 3.6e-12, b: 0.0, Ea: -270.0}
 - equation: NO2 + O <=> NO + O2
-  type: elementary
   rate-constant: {A: 5.5e-12, b: 0.0, Ea: -188.0}
 - equation: NO2 + H <=> NO + OH
-  type: elementary
   rate-constant: {A: 1.5e-10, b: 0.0, Ea: 0.0}
 - equation: N2 + O (+ M) <=> N2O (+ M)
   type: falloff
   low-P-rate-constant: {A: 0.0, b: 0.0, Ea: 3000.0}
   high-P-rate-constant: {A: 0.0, b: 0.0, Ea: 3000.0}
 - equation: NO2 + HCO <=> CO2 + HNO
-  type: elementary
   rate-constant: {A: 1.398436e-08, b: -0.75, Ea: 971.0}
 - equation: NO2 + N <=> N2O + O
-  type: elementary
   rate-constant: {A: 5.8e-12, b: 0.0, Ea: -221.0}
 - equation: NO2 + N <=> NO + NO
-  type: elementary
   rate-constant: {A: 4.5e-12, b: 0.0, Ea: -221.0}
 - equation: NO2 + N <=> N2 + O2
-  type: elementary
   rate-constant: {A: 1.5e-12, b: 0.0, Ea: -221.0}
 - equation: NO2 + HS <=> HSO + NO
-  type: elementary
   rate-constant: {A: 2.9e-11, b: 0.0, Ea: -240.0}
 - equation: NO2 + SO <=> SO2 + NO
-  type: elementary
   rate-constant: {A: 1.4e-11, b: 0.0, Ea: 0.0}
 - equation: NO2 + CH3 <=> CH3O + NO
-  type: elementary
   rate-constant: {A: 2.66e-11, b: 0.0, Ea: 0.0}
 - equation: NO2 + CN <=> NO + NCO
-  type: elementary
   rate-constant: {A: 8.0e-11, b: 0.0, Ea: -186.0}
 - equation: NO2 + CN <=> CO2 + N2
-  type: elementary
   rate-constant: {A: 5.0e-12, b: 0.0, Ea: 0.0}
 - equation: NO2 + NCO <=> N2O + CO2
-  type: elementary
   rate-constant: {A: 1.6e-11, b: 0.0, Ea: 0.0}
 - equation: NO2 + NH2 <=> N2O + H2O
-  type: elementary
   rate-constant: {A: 2.583168e-08, b: -1.44, Ea: 135.0}
 - equation: NO + OH (+ M) <=> HNO2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.930249e-24, b: -2.6, Ea: 0.0}
   high-P-rate-constant: {A: 6.36817e-11, b: -0.1, Ea: 0.0}
 - equation: NO2 + HNO <=> HNO2 + NO
-  type: elementary
   rate-constant: {A: 1.0e-12, b: 0.0, Ea: 1000.0}
 - equation: NO2 + H2CO <=> HNO2 + HCO
-  type: elementary
   rate-constant: {A: 1.27896e-21, b: 2.77, Ea: 6910.0}
 - equation: HNO2 + H <=> H2 + NO2
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 3700.0}
 - equation: HNO2 + O <=> OH + NO2
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 3000.0}
 - equation: HNO2 + OH <=> H2O + NO2
-  type: elementary
   rate-constant: {A: 6.0e-12, b: 0.0, Ea: 0.0}
 - equation: NO2 + OH (+ M) <=> HNO3 (+ M)
   type: falloff
   low-P-rate-constant: {A: 3.968487e-23, b: -2.9, Ea: 0.0}
   high-P-rate-constant: {A: 2.297915e-09, b: -0.6, Ea: 0.0}
 - equation: HNO3 + H <=> NO2 + H2O
-  type: elementary
   rate-constant: {A: 9.917429e-23, b: 3.29, Ea: 3160.0}
 - equation: HNO3 + OH <=> H2O + NO3
-  type: elementary
   rate-constant: {A: 1.5e-13, b: 0.0, Ea: 0.0}
 - equation: HNO3 + H <=> H2 + NO3
-  type: elementary
   rate-constant: {A: 9.08223e-16, b: 1.53, Ea: 8250.0}
 - equation: NO2 + O (+ M) <=> NO3 (+ M)
   type: falloff
   low-P-rate-constant: {A: 6.754998e-28, b: -1.5, Ea: 0.0}
   high-P-rate-constant: {A: 2.3e-11, b: 0.0, Ea: 0.0}
 - equation: NO2 + O3 <=> NO3 + O2
-  type: elementary
   rate-constant: {A: 1.4e-13, b: 0.0, Ea: 2470.0}
 - equation: NO3 + H <=> NO2 + OH
-  type: elementary
   rate-constant: {A: 9.4e-11, b: 0.0, Ea: 0.0}
 - equation: NO3 + O <=> NO2 + O2
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: NO3 + OH <=> NO2 + HO2
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 0.0}
 - equation: NO3 + HO2 <=> HNO3 + O2
-  type: elementary
   rate-constant: {A: 1.9e-12, b: 0.0, Ea: 0.0}
 - equation: NO3 + NO <=> NO2 + NO2
-  type: elementary
   rate-constant: {A: 1.8e-11, b: 0.0, Ea: -110.0}
 - equation: SO2 + O (+ M) <=> SO3 (+ M)
   type: falloff
   low-P-rate-constant: {A: 4.0e-32, b: 0.0, Ea: 1000.0}
   high-P-rate-constant: {A: 1.5e-11, b: 0.0, Ea: 0.0}
 - equation: SO2 + O3 <=> SO3 + O2
-  type: elementary
   rate-constant: {A: 3.0e-12, b: 0.0, Ea: 7000.0}
 - equation: SO3 + H <=> SO2 + OH
-  type: elementary
   rate-constant: {A: 1.387602e-14, b: 1.22, Ea: 1670.0}
 - equation: SO3 + O <=> SO2 + O2
-  type: elementary
   rate-constant: {A: 4.561464e-20, b: 2.57, Ea: 14700.0}
 - equation: SO3 + SO <=> SO2 + SO2
-  type: elementary
   rate-constant: {A: 2.0e-15, b: 0.0, Ea: 0.0}
 - equation: SO2 + OH (+ M) <=> HSO3 (+ M)
   type: falloff
   low-P-rate-constant: {A: 5.978058e-23, b: -3.3, Ea: 0.0}
   high-P-rate-constant: {A: 7.045766e-11, b: -0.7, Ea: 0.0}
 - equation: HSO3 + O2 <=> HO2 + SO3
-  type: elementary
   rate-constant: {A: 1.3e-12, b: 0.0, Ea: 330.0}
 - equation: HSO3 + OH (+ M) <=> H2SO4 (+ M)
   type: falloff
   low-P-rate-constant: {A: 5.978058e-23, b: -3.3, Ea: 0.0}
   high-P-rate-constant: {A: 7.045766e-11, b: -0.7, Ea: 0.0}
 - equation: HSO3 + H <=> H2 + SO3
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: HSO3 + O <=> OH + SO3
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: SO3 + H2O + H2O <=> H2SO4 + H2O
-  type: elementary
   rate-constant: {A: 2.3e-43, b: 1.0, Ea: -6540.0}
 - equation: CH3 + O2 (+ M) <=> CH3O2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.494515e-25, b: -3.3, Ea: 0.0}
   high-P-rate-constant: {A: 2.6e-11, b: 0.0, Ea: 0.0}
 - equation: CH3O2 + H <=> CH3O + OH
-  type: elementary
   rate-constant: {A: 1.6e-10, b: 0.0, Ea: 0.0}
 - equation: CH3O2 + H <=> CH4 + O2
-  type: elementary
   rate-constant: {A: 4.0e-14, b: 1.0, Ea: 8350.0}
 - equation: CH3O2 + O <=> CH3O + O2
-  type: elementary
   rate-constant: {A: 6.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH3O2 + OH (+ M) <=> CH3OH + O2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 0.0, b: 0.0, Ea: 0.0}
   high-P-rate-constant: {A: 0.0, b: 0.0, Ea: 0.0}
 - equation: CH3O2 + CH3 <=> CH3O + CH3O
-  type: elementary
   rate-constant: {A: 4.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH3O2 + NO <=> CH3O + NO2
-  type: elementary
   rate-constant: {A: 2.8e-12, b: 0.0, Ea: -285.0}
 - equation: CH3 + CO (+ M) <=> CH3CO (+ M)
   type: falloff
   low-P-rate-constant: {A: 5.226562e-10, b: -7.6, Ea: 5530.0}
   high-P-rate-constant: {A: 8.4e-13, b: 0.0, Ea: 3460.0}
 - equation: CH3CO + H <=> CH2CO + H2
-  type: elementary
   rate-constant: {A: 1.4e-11, b: 0.0, Ea: 0.0}
 - equation: CH3CO + H <=> CH3 + HCO
-  type: elementary
   rate-constant: {A: 3.6e-11, b: 0.0, Ea: 0.0}
 - equation: CH3CO + O <=> CH3 + CO2
-  type: elementary
   rate-constant: {A: 8.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH3CO + O <=> CH2CO + OH
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH3CO + OH <=> CH2CO + H2O
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH3CO + CH3 <=> CH4 + CH2CO
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: H2CO + CH3CO <=> CH3CHO + HCO
-  type: elementary
   rate-constant: {A: 3.0e-13, b: 0.0, Ea: 6500.0}
 - equation: HCO + CH3CO <=> CH3CHO + CO
-  type: elementary
   rate-constant: {A: 1.5e-11, b: 0.0, Ea: 0.0}
 - equation: CH3O + CH3CO <=> CH3CHO + H2CO
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH3O + CH3CO <=> CH3OH + CH2CO
-  type: elementary
   rate-constant: {A: 1.0e-11, b: 0.0, Ea: 0.0}
 - equation: C2H4OH + H <=> CH3CHO + H2
-  type: elementary
   rate-constant: {A: 3.3e-11, b: 0.0, Ea: 0.0}
 - equation: C2H4OH + H <=> CH3 + H2COH
-  type: elementary
   rate-constant: {A: 6.6e-12, b: 0.0, Ea: 0.0}
 - equation: C2H4OH + OH <=> CH3CHO + H2O
-  type: elementary
   rate-constant: {A: 3.3e-11, b: 0.0, Ea: 0.0}
 - equation: C2H4OH + O <=> CH3CHO + OH
-  type: elementary
   rate-constant: {A: 1.5e-10, b: 0.0, Ea: 0.0}
 - equation: CH3CHO + H <=> CH3CO + H2
-  type: elementary
   rate-constant: {A: 2.14209e-19, b: 2.58, Ea: 615.0}
 - equation: CH3CHO + H <=> CH2CHO + H2
-  type: elementary
   rate-constant: {A: 1.381873e-20, b: 3.1, Ea: 2620.0}
 - equation: CH3CHO + OH <=> CH3CO + H2O
-  type: elementary
   rate-constant: {A: 5.6e-12, b: 0.0, Ea: -300.0}
 - equation: CH3CHO + O <=> CH3CO + OH
-  type: elementary
   rate-constant: {A: 1.8e-11, b: 0.0, Ea: 1100.0}
 - equation: C2H3 + OH (+ M) <=> CH3CHO (+ M)
   type: falloff
@@ -2473,120 +2241,88 @@ reactions:
   low-P-rate-constant: {A: 1.0e-30, b: 0.0, Ea: 0.0}
   high-P-rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: C2H5 + O <=> CH3CHO + H
-  type: elementary
   rate-constant: {A: 1.3e-10, b: 0.0, Ea: 0.0}
 - equation: H + S4 (+ M) <=> HS4 (+ M)
   type: falloff
   low-P-rate-constant: {A: 7.0e-30, b: 0.0, Ea: 0.0}
   high-P-rate-constant: {A: 7.0e-11, b: 0.0, Ea: 0.0}
 - equation: H + S8 <=> HS4 + S4
-  type: elementary
   rate-constant: {A: 3.0e-12, b: 0.0, Ea: 5000.0}
 - equation: H + HS4 <=> H2 + S4
-  type: elementary
   rate-constant: {A: 1.0e-10, b: 0.0, Ea: 1000.0}
 - equation: OH + HS4 <=> H2O + S4
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 500.0}
 - equation: H + HS4 <=> H2S + S3
-  type: elementary
   rate-constant: {A: 1.0e-10, b: 0.0, Ea: 2500.0}
 - equation: HS + HS4 <=> H2S + S4
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 2500.0}
 - equation: NH2 + HS4 <=> NH3 + S4
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 500.0}
 - equation: HS4 + HS4 <=> H2 + S8
-  type: elementary
   rate-constant: {A: 3.0e-12, b: 0.0, Ea: 2500.0}
 - equation: S + HS4 <=> HS + S4
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 1000.0}
 - equation: H + C4H2 (+ M) <=> C4H3 (+ M)
   type: falloff
   low-P-rate-constant: {A: 0.006564946, b: -8.9, Ea: 1260.0}
   high-P-rate-constant: {A: 5.539338e-14, b: 1.2, Ea: 882.0}
 - equation: H + C4H3 <=> H2 + C4H2
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 500.0}
 - equation: H + C4H3 <=> C2H2 + C2H2
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 2000.0}
 - equation: H + C4H3 (+ M) <=> C4H4 (+ M)
   type: falloff
   low-P-rate-constant: {A: 0.006564946, b: -8.9, Ea: 1260.0}
   high-P-rate-constant: {A: 2.0e-10, b: 0.0, Ea: 0.0}
 - equation: O + C4H3 <=> C4H2 + OH
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 911.0}
 - equation: OH + C4H3 <=> C4H2 + H2O
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 911.0}
 - equation: H + C4H4 <=> C4H3 + H2
-  type: elementary
   rate-constant: {A: 3.0e-12, b: 0.0, Ea: 2000.0}
 - equation: O + C4H4 <=> C4H3 + OH
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 911.0}
 - equation: OH + C4H4 <=> C4H3 + H2O
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: N2H4 + H <=> N2H3 + H2
-  type: elementary
   rate-constant: {A: 1.2e-11, b: 0.0, Ea: 1261.0}
 - equation: N2H4 + OH <=> N2H3 + H2O
-  type: elementary
   rate-constant: {A: 4.335048e-08, b: -1.33, Ea: 0.0}
 - equation: NH2 + NH2 (+ M) <=> N2H4 (+ M)
   type: falloff
   low-P-rate-constant: {A: 9.158047e-20, b: -3.9, Ea: 0.0}
   high-P-rate-constant: {A: 2.167928e-11, b: 0.3, Ea: 0.0}
 - equation: N2H4 + CH3 <=> N2H3 + CH4
-  type: elementary
   rate-constant: {A: 1.234568e-24, b: 4.0, Ea: 2038.0}
 - equation: N2H3 + H <=> N2H2 + H2
-  type: elementary
   rate-constant: {A: 1.6e-10, b: 0.0, Ea: 0.0}
 - equation: N2H3 + O <=> N2H2 + OH
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: N2H3 + OH <=> N2H2 + H2O
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: N2H3 + CH3 <=> N2H2 + CH4
-  type: elementary
   rate-constant: {A: 3.0e-11, b: 0.0, Ea: 0.0}
 - equation: N2H3 + H (+ M) <=> N2H4 (+ M)
   type: falloff
   low-P-rate-constant: {A: 9.158047e-20, b: -3.9, Ea: 0.0}
   high-P-rate-constant: {A: 2.167928e-11, b: 0.3, Ea: 0.0}
 - equation: N2D + H2 <=> NH + H
-  type: elementary
   rate-constant: {A: 2.2e-12, b: 0.0, Ea: 0.0}
 - equation: N2D + CH4 <=> H2CN + H2
-  type: elementary
   rate-constant: {A: 3.0e-12, b: 0.0, Ea: 0.0}
 - equation: N2D + CH4 <=> NH + CH3
-  type: elementary
   rate-constant: {A: 1.0e-12, b: 0.0, Ea: 0.0}
 - equation: N2D + H2O <=> HNO + H
-  type: elementary
   rate-constant: {A: 5.0e-11, b: 0.0, Ea: 0.0}
 - equation: N2D + CO2 <=> NO + CO
-  type: elementary
   rate-constant: {A: 3.6e-13, b: 0.0, Ea: 0.0}
 - equation: N2D + CO <=> N + CO
-  type: elementary
   rate-constant: {A: 1.9e-12, b: 0.0, Ea: 0.0}
 - equation: N2D + N2 <=> N + N2
-  type: elementary
   rate-constant: {A: 1.7e-14, b: 0.0, Ea: 0.0}
 - equation: C2H + HCN <=> HCCCN + H
-  type: elementary
   rate-constant: {A: 2.3e-10, b: 0.0, Ea: 0.0}
 - equation: C2H2 + CN <=> HCCCN + H
-  type: elementary
   rate-constant: {A: 2.3e-10, b: 0.0, Ea: 0.0}
 - equation: 1CH2 + C2H2 (+ M) <=> C3H4 (+ M)
   type: falloff
@@ -2597,38 +2333,28 @@ reactions:
   low-P-rate-constant: {A: 2.0e-28, b: 0.0, Ea: 3330.0}
   high-P-rate-constant: {A: 2.0e-11, b: 0.0, Ea: 3330.0}
 - equation: C3H4 + O <=> HCO + C2H3
-  type: elementary
   rate-constant: {A: 3.7e-12, b: 0.0, Ea: 1950.0}
 - equation: C3H4 + O <=> CH3 + HCCO
-  type: elementary
   rate-constant: {A: 2.004794e-14, b: 0.9, Ea: 2170.0}
 - equation: C3H4 + O <=> C2H4 + CO
-  type: elementary
   rate-constant: {A: 4.389429e-10, b: -0.57, Ea: 2220.0}
 - equation: C3H4 + H <=> C2H2 + CH3
-  type: elementary
   rate-constant: {A: 1.537566e-15, b: 1.7, Ea: 4130.0}
 - equation: 1CH2 + N2 (+ M) <=> CH2N2 (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.163381e-11, b: -7.2, Ea: 1550.0}
   high-P-rate-constant: {A: 1163381000.0, b: -7.2, Ea: 1550.0}
 - equation: CH2N2 + CH2 <=> N2 + C2H4
-  type: elementary
   rate-constant: {A: 2.549665e-20, b: 2.8, Ea: 1200.0}
 - equation: 1CH2 + CH2N2 <=> N2 + C2H4
-  type: elementary
   rate-constant: {A: 2.0e-10, b: 0.0, Ea: 0.0}
 - equation: CH2N2 + CH3 <=> N2 + C2H5
-  type: elementary
   rate-constant: {A: 4.0e-11, b: 0.0, Ea: 1200.0}
 - equation: CH2N2 + H <=> CH3 + N2
-  type: elementary
   rate-constant: {A: 1.279806e-15, b: 1.45, Ea: 500.0}
 - equation: CH2N2 + C2H2 <=> C3H4 + N2
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 5000.0}
 - equation: CH2CO + C2H2 <=> C3H4 + CO
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 12000.0}
 - equation: CH3 + C2H3 (+ M) <=> C3H6 (+ M)
   type: falloff
@@ -2639,67 +2365,50 @@ reactions:
   low-P-rate-constant: {A: 9.2e-31, b: 0.0, Ea: -530.0}
   high-P-rate-constant: {A: 9.2e-12, b: 0.0, Ea: -530.0}
 - equation: C2H4 + CH3 <=> C3H6 + H
-  type: elementary
   rate-constant: {A: 6.9e-12, b: 0.0, Ea: 5600.0}
 - equation: C3H6 + O <=> HCO + C2H5
-  type: elementary
   rate-constant: {A: 2.840686e-18, b: 2.2, Ea: -450.0}
 - equation: C3H6 + O <=> CH2CHO + CH3
-  type: elementary
   rate-constant: {A: 1.065257e-17, b: 2.2, Ea: -450.0}
 - equation: C3H6 + O <=> CH3CO + CH3
-  type: elementary
   rate-constant: {A: 6.036458e-18, b: 2.2, Ea: -450.0}
 - equation: C3H6 + O <=> H2CO + C2H4
-  type: elementary
   rate-constant: {A: 1.420343e-17, b: 2.2, Ea: -450.0}
 - equation: CH2N2 + C2H4 <=> C3H6 + N2
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 5000.0}
 - equation: CH2CO + C2H4 <=> C3H6 + CO
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 12000.0}
 - equation: CH2N2 + HCN <=> CH3CN + N2
-  type: elementary
   rate-constant: {A: 2.0e-11, b: 0.0, Ea: 5000.0}
 - equation: CH3CN + O <=> CH3 + NCO
-  type: elementary
   rate-constant: {A: 2.28468e-12, b: 0.6, Ea: 4900.0}
 - equation: CH3CN + OH <=> CH4 + NCO
-  type: elementary
   rate-constant: {A: 7.749335e-15, b: 0.7, Ea: 900.0}
 - equation: CH3CN + H <=> HCN + CH3
-  type: elementary
   rate-constant: {A: 1.5e-10, b: 0.0, Ea: 6000.0}
 - equation: CH3CN + H <=> CH2CN + H2
-  type: elementary
   rate-constant: {A: 8.4e-11, b: 0.0, Ea: 3600.0}
 - equation: 1CH2 + HCN (+ M) <=> CH3CN (+ M)
   type: falloff
   low-P-rate-constant: {A: 9.430054e-34, b: 1.5, Ea: -830.0}
   high-P-rate-constant: {A: 9.430054e-17, b: 1.5, Ea: -830.0}
 - equation: C2H3 + N <=> NH + C2H2
-  type: elementary
   rate-constant: {A: 1.2e-11, b: 0.0, Ea: 0.0}
 - equation: C2H3 + N (+ M) <=> CH3CN (+ M)
   type: falloff
   low-P-rate-constant: {A: 1.0e-30, b: 0.0, Ea: 0.0}
   high-P-rate-constant: {A: 3.0e-12, b: 0.0, Ea: 0.0}
 - equation: C2H3 + N <=> CH2CN + H
-  type: elementary
   rate-constant: {A: 6.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH2CN + O <=> CH2 + NCO
-  type: elementary
   rate-constant: {A: 8.0e-11, b: 0.0, Ea: 2000.0}
 - equation: CH2CN + O <=> HCN + HCO
-  type: elementary
   rate-constant: {A: 8.0e-11, b: 0.0, Ea: 0.0}
 - equation: CH2CN + H (+ M) <=> CH3CN (+ M)
   type: falloff
   low-P-rate-constant: {A: 2.308411e-29, b: 0.04, Ea: 0.0}
   high-P-rate-constant: {A: 2.308411e-10, b: 0.04, Ea: 0.0}
 - equation: C2H4 + N2D <=> CH3CN + H
-  type: elementary
   rate-constant: {A: 2.3e-10, b: 0.0, Ea: 503}
 - equation: H2O + hv => OH + H
   type: photolysis

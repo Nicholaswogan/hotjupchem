@@ -3,127 +3,19 @@ import numba as nb
 from numba import types
 from scipy import constants as const
 from scipy import integrate
-import cantera as ct
-
-def composition_from_metallicity(sun_mol, M_H_metallicity):
-    """Returns composition given metallicity
-
-    Parameters
-    ----------
-    sun_mol : dict
-        Elemental composition of the sun (mol/mol).
-    M_H_metallicity : float
-        log10 metallicity relative to solar
-
-    Returns
-    -------
-    dict
-        Contains atomic composition.
-    """
-
-    # Check that H and He are in sun's compositions
-    if 'H' not in sun_mol:
-        raise Exception('"H" must be part of solar composition.')
-    if 'He' not in sun_mol:
-        raise Exception('"He" must be part of solar composition.')
-
-    # Separate metals from non-metals
-    metals = []
-    for key in sun_mol:
-        if key != 'H' and key != 'He':
-            metals.append(key)
-
-    # Add up all metals
-    mol_metals = 0.0
-    for sp in metals:
-        mol_metals += sun_mol[sp]
-
-    # Compute the mol of H, metal and He of body
-    mol_H_body = (10.0**M_H_metallicity * (mol_metals/sun_mol['H']) + 1.0 + sun_mol['He']/sun_mol['H'])**(-1.0)
-    mol_metal_body = 10.0**M_H_metallicity * (mol_metals/sun_mol['H'])*mol_H_body
-    mol_He_body = (sun_mol['He']/sun_mol['H'])*mol_H_body
-    
-    # Check everything worked out
-    assert np.isclose((mol_metal_body/mol_H_body)/(mol_metals/sun_mol['H']), 10.0**M_H_metallicity)
-    
-    # Get metal composition
-    metal_fractions = {}
-    for sp in metals:
-        metal_fractions[sp] = sun_mol[sp]/mol_metals
-
-    # compute composition of the body
-    mol_body = {}
-    mol_body['H'] = mol_H_body
-    mol_body['He'] = mol_He_body
-    for sp in metals:
-        mol_body[sp] = mol_metal_body*metal_fractions[sp]
-
-    return mol_body
-
-def composition_from_metallicity_for_atoms(atoms, sun_mol, M_H_metallicity):
-    """Computes composition given metallicity and a list of atoms.
-
-    Parameters
-    ----------
-    atoms : list
-        List of atoms
-    sun_mol : dict
-        Elemental composition of the sun (mol/mol).
-    M_H_metallicity : float
-        log10 metallicity relative to solar
-
-    Returns
-    -------
-    dict
-        Contains atomic composition.
-    """    
-    mol_body = composition_from_metallicity(sun_mol, M_H_metallicity)
-
-    mol_tot = 0.0
-    for atom in atoms:
-        if atom in mol_body:
-            mol_tot += mol_body[atom]
-
-    mol_out = {}
-    for atom in atoms:
-        if atom in mol_body: 
-            mol_out[atom] = mol_body[atom]/mol_tot
-        else:
-            mol_out[atom] = 0.0
-    
-    return mol_out
+from photochem import equilibrate
 
 class Metallicity():
 
-    def __init__(self, ct_file):
+    def __init__(self, filename):
         """A simple Metallicity calculator.
 
         Parameters
         ----------
-        ct_file : str
-            Path to a Cantera input file.
-        """        
-        # composition of the Sun (mol/mol)
-        # From Table 8 in Lodders et al. (2009), 
-        # "Abundances of the elements in the solar system"
-        self.sun_mol = {
-            'H': 0.921514888949834,
-            'He': 0.07749066995740882,
-            'O': 0.0004946606569284939,
-            'C': 0.0002300986287941852,
-            'N': 6.278165064228584e-05,
-            'Si': 3.131024001891741e-05,
-            'Mg': 3.101174053726646e-05,
-            'Ne': 0.00010582900979606936,
-            'Fe': 2.6994013922759826e-05,
-            'S': 1.1755152117252983e-05
-        }
-
-        self.gas = ct.Solution(ct_file)
-        if 'H' not in self.gas.element_names:
-            raise Exception('"H" must be an element in the Cantera file')
-        if 'He' not in self.gas.element_names:
-            raise Exception('"He" must be an element in the Cantera file')
+        filename : str
+            Path to a thermodynamic file
+        """
+        self.gas = equilibrate.ChemEquiAnalysis(filename)
 
     def composition(self, T, P, CtoO, metal):
         """Given a T-P profile, C/O ratio and metallicity, the code
@@ -168,15 +60,6 @@ class Metallicity():
         if metal <= 0:
             raise ValueError('"metal" must be greater than 0')
 
-        # Get composition
-        comp = composition_from_metallicity_for_atoms(self.gas.element_names, self.sun_mol, np.log10(metal))
-
-        # Adjust C and O to get desired C/O ratio. CtoO is relative to solar
-        x = CtoO*(comp['C']/comp['O'])
-        a = (x*comp['O'] - comp['C'])/(1+x)
-        comp['C'] = comp['C'] + a
-        comp['O'] = comp['O'] - a
-
         # For output
         out = {}
         for sp in self.gas.species_names:
@@ -185,11 +68,10 @@ class Metallicity():
 
         # Compute chemical equilibrium at all altitudes
         for i in range(P.shape[0]):
-            self.gas.TPX = T[i],(P[i]/1.0e6)*1e5,comp
-            self.gas.equilibrate('TP')
+            self.gas.solve_metallicity(P[i], T[i], metal, CtoO)
             for j,sp in enumerate(self.gas.species_names):
-                out[sp][i] = self.gas.X[j]
-            mubar[i] = self.gas.mean_molecular_weight
+                out[sp][i] = self.gas.molfracs_species[j]
+            mubar[i] = self.gas.mubar
 
         return out, mubar
     
@@ -340,4 +222,3 @@ def compute_altitude_of_PT(P, P_ref, T, mubar, planet_radius, planet_mass, P_top
     z_ = np.append(out1.y[0][::-1],out2.y[0])
 
     return P_, T_, mubar_, z_
-

@@ -10,14 +10,14 @@ from . import utils
 DATA_DIR = os.path.dirname(os.path.realpath(__file__))+'/data/'
 
 class EvoAtmosphereHJ(EvoAtmosphere):
-    
-    __isfrozen = False
 
-    def __init__(self, stellar_flux_file, planet_mass, planet_radius, P_ref, nz=100):
+    def __init__(self, mechanism_file, stellar_flux_file, planet_mass, planet_radius, P_ref, nz=100):
         """Initializes the code
 
         Parameters
         ----------
+        mechanism_file : str
+            Path to the file describing the reaction mechanism
         stellar_flux_file : str
             Path to the file describing the stellar UV flux.
         planet_mass : float
@@ -41,7 +41,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             yaml.dump(sol,f,Dumper=MyDumper)
         EvoAtmosphere.__init__(
             self,
-            DATA_DIR+'zahnle_earth_HNOCS.yaml',
+            mechanism_file,
             'tmpfile1234567890.yaml',
             stellar_flux_file,
             DATA_DIR+'atmosphere_init.txt'
@@ -58,7 +58,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         # compared to predicted quench points of gases
         self.BOA_pressure_factor = 10.0
         # For computing chemical equilibrium at a metallicity.
-        self.m = utils.Metallicity(DATA_DIR+'zahnle_earth_HNOCS_ct.yaml')
+        self.m = utils.Metallicity(mechanism_file)
 
         # Parameters for determining steady state
         self.TOA_pressure_avg = 1.0e-7*1e6 # mean TOA pressure (dynes/cm^2)
@@ -95,17 +95,6 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.Kzz_desired = None
         # Index of climate grid that is bottom of photochemical grid
         self.ind_b = None
-
-        # Prevent new attributes
-        self._freeze()
-
-    def __setattr__(self, key, value):
-        if self.__isfrozen and not hasattr(self, key):
-            raise TypeError("%r is a frozen class" % self)
-        object.__setattr__(self, key, value)
-
-    def _freeze(self):
-        self.__isfrozen = True
 
     def initialize_to_climate_equilibrium_PT(self, P_in, T_in, Kzz_in, metallicity, CtoO):
         """Initialized the photochemical model to a climate model result that assumes chemical equilibrium
@@ -327,7 +316,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
 
         return sol
 
-    def return_atmosphere(self, include_deep_atmosphere = True):
+    def return_atmosphere(self, include_deep_atmosphere = True, equilibrium = False):
         """Returns a dictionary with temperature, Kzz and mixing ratios
         on the photochemical grid.
 
@@ -351,9 +340,14 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         out['temperature'] = self.var.temperature
         out['Kzz'] = self.var.edd
         species_names = self.dat.species_names[:-2]
-        for i,sp in enumerate(species_names):
-            mix = self.wrk.densities[i,:]/self.wrk.density
-            out[sp] = mix
+        if equilibrium:
+            mix, mubar = self.m.composition(out['temperature'], out['pressure'], self.CtoO, self.metallicity)
+            for key in mix:
+                out[key] = mix[key]
+        else:
+            for i,sp in enumerate(species_names):
+                mix = self.wrk.densities[i,:]/self.wrk.density
+                out[sp] = mix
 
         if not include_deep_atmosphere:
             return out
@@ -372,41 +366,59 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         for i,sp in enumerate(species_names):
             out[sp] = np.append(mix[sp],out[sp])
 
-        return out 
+        return out
     
-    def find_steady_state(self):
-        """Attempts to find a photochemical steady state.
+    def initialize_robust_stepper(self, usol):
+        """Initialized a robust integrator.
+
+        Parameters
+        ----------
+        usol : ndarray[double,dim=2]
+            Input number densities
+        """        
+        if self.P_clima_grid is None:
+            raise Exception('This routine can only be called after `initialize_to_climate_equilibrium_PT`')
+        
+        self.total_step_counter = 0
+        self.atol_counter = 0
+        self.nerrors = 0
+        self.initialize_stepper(usol)
+        self.robust_stepper_initialized = True
+
+    def robust_step(self):
+        """Takes a single robust integrator step
 
         Returns
         -------
-        bool
-            If True, then the routine was successful.
+        tuple
+            The tuple contains two bools `give_up, reached_steady_state`. If give_up is True
+            then the algorithm things it is time to give up on reaching a steady state. If
+            reached_steady_state then the algorithm has reached a steady state within
+            tolerance.
         """        
-
         if self.P_clima_grid is None:
             raise Exception('This routine can only be called after `initialize_to_climate_equilibrium_PT`')
 
-        total_step_counter = 0
-        atol_counter = 0
-        nerrors = 0
-        self.initialize_stepper(self.wrk.usol)
+        if not self.robust_stepper_initialized:
+            raise Exception('This routine can only be called after `initialize_robust_stepper`')
 
-        success = True
+        give_up = False
+        reached_steady_state = False
 
-        while True:
+        for i in range(1):
             try:
                 self.step()
-                atol_counter += 1
-                total_step_counter += 1
+                self.atol_counter += 1
+                self.total_step_counter += 1
             except PhotoException as e:
                 # If there is an error, lets reinitialize, but get rid of any
                 # negative numbers
                 usol = np.clip(self.wrk.usol.copy(),a_min=1.0e-40,a_max=np.inf)
                 self.initialize_stepper(usol)
-                nerrors += 1
+                self.nerrors += 1
 
-                if nerrors > 10:
-                    success = False
+                if self.nerrors > 10:
+                    give_up = True
                     break
 
             # convergence checking
@@ -433,16 +445,17 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             if condition1 and condition2:
                 if self.verbose:
                     print('nsteps = %i  longdy = %.1e  max_dT = %.1e  max_dlog10edd = %.1e  TOA_pressure = %.1e'% \
-                        (total_step_counter, self.wrk.longdy, max_dT, max_dlog10edd, TOA_pressure/1e6))
+                        (self.total_step_counter, self.wrk.longdy, max_dT, max_dlog10edd, TOA_pressure/1e6))
                 # success!
+                reached_steady_state = True
                 break
 
-            if atol_counter > self.freq_reinit:
+            if self.atol_counter > self.freq_reinit:
                 # Convergence has not happened after 10000 steps, so we try a new atol
                 self.var.atol = 10.0**np.random.uniform(low=np.log10(self.atol_min),high=np.log10(self.atol_max))
                 self.initialize_stepper(self.wrk.usol)
-                atol_counter = 0
-                continue
+                self.atol_counter = 0
+                break
         
             if not (self.wrk.nsteps % self.freq_update_PTKzz) or (condition1 and not condition2):
                 # After ~1000 steps, lets update P,T, edd and vertical grid
@@ -450,16 +463,35 @@ class EvoAtmosphereHJ(EvoAtmosphere):
                 self.update_vertical_grid(TOA_pressure=self.TOA_pressure_avg)
                 self.initialize_stepper(self.wrk.usol)
 
-            if total_step_counter > self.max_total_step:
-                success = False
+            if self.total_step_counter > self.max_total_step:
+                give_up = True
                 break
 
             if not (self.wrk.nsteps % self.freq_print) and self.verbose:
                 print('nsteps = %i  longdy = %.1e  max_dT = %.1e  max_dlog10edd = %.1e  TOA_pressure = %.1e'% \
-                    (total_step_counter, self.wrk.longdy, max_dT, max_dlog10edd, TOA_pressure/1e6))
+                    (self.total_step_counter, self.wrk.longdy, max_dT, max_dlog10edd, TOA_pressure/1e6))
                 
-        return success
+        return give_up, reached_steady_state
+    
+    def find_steady_state(self):
+        """Attempts to find a photochemical steady state.
 
+        Returns
+        -------
+        bool
+            If True, then the routine was successful.
+        """    
+
+        self.initialize_robust_stepper(self.wrk.usol)
+        success = True
+        while True:
+            give_up, reached_steady_state = self.robust_step()
+            if reached_steady_state:
+                break
+            if give_up:
+                success = False
+                break
+        return success
         
 
     
