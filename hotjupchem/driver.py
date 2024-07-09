@@ -1,4 +1,5 @@
 import numpy as np
+import numba as nb
 import os
 from scipy import constants as const
 
@@ -8,6 +9,12 @@ from photochem.utils._format import yaml, FormatSettings_main, MyDumper, Loader
 from . import utils
 
 DATA_DIR = os.path.dirname(os.path.realpath(__file__))+'/data/'
+
+@nb.cfunc(nb.double(nb.double, nb.double, nb.double))
+def custom_binary_diffusion_fcn(mu_i, mubar, T):
+    # Equation 6 in Gladstone et al. (1996)
+    b = 3.64e-5*T**(1.75-1.0)*7.3439e21*np.sqrt(2.01594/mu_i)
+    return b
 
 class EvoAtmosphereHJ(EvoAtmosphere):
 
@@ -48,6 +55,9 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         )
         os.remove('tmpfile1234567890.yaml')
 
+        if self.dat.np != 0:
+            raise Exception('Particles are not allowed in the HJ model, currently')
+
         # Save inputs that matter
         self.planet_radius = planet_radius
         self.planet_mass = planet_mass
@@ -57,6 +67,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         # The factor of pressure the atmosphere extends
         # compared to predicted quench points of gases
         self.BOA_pressure_factor = 10.0
+        self.initial_cond_with_quenching = True
         # For computing chemical equilibrium at a metallicity.
         self.m = utils.Metallicity(mechanism_file)
 
@@ -64,9 +75,9 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.TOA_pressure_avg = 1.0e-7*1e6 # mean TOA pressure (dynes/cm^2)
         self.max_dT_tol = 5 # The permitted difference between T in photochem and desired T
         self.max_dlog10edd_tol = 0.2 # The permitted difference between Kzz in photochem and desired Kzz
-        self.atol_min = 1e-15 # min atol that will be tried
-        self.atol_max = 2e-14 # max atol that will be tried
-        self.atol_avg = 1e-14 # avg atol that is tried
+        self.atol_min = 1e-17 # min atol that will be tried
+        self.atol_max = 1e-15 # max atol that will be tried
+        self.atol_avg = 1e-16 # avg atol that is tried
         self.freq_update_PTKzz = 1000 # step frequency to update PTKzz profile.
         self.freq_reinit = 10_000 # step frequency to reinitialize integration and change atol
         self.max_total_step = 100_000 # Maximum total allowed steps before giving up
@@ -78,8 +89,9 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.var.autodiff = True # Turn on autodiff
         self.var.atol = self.atol_avg
         self.var.conv_min_mix = 1e-10 # Min mix to consider during convergence check
-        self.var.conv_longdy = 0.03 # threshold relative change that determines convergence
+        self.var.conv_longdy = 0.01 # threshold relative change that determines convergence
         self.var.verbose = 0 # No printing
+        self.var.custom_binary_diffusion_fcn = custom_binary_diffusion_fcn
 
         # Values that will be needed later. All of these set
         # in `initialize_to_climate_equilibrium_PT`
@@ -134,7 +146,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
 
         # Altitude of P-T grid
         P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P_in, self.P_ref, T_in, mubar, self.planet_radius, self.planet_mass, self.TOA_pressure_avg)
-        # If needed, extrapolte Kzz and mixing ratios
+        # If needed, extrapolate Kzz and mixing ratios
         if P1.shape[0] != Kzz_in.shape[0]:
             Kzz1 = np.append(Kzz_in,Kzz_in[-1])
             mix1 = {}
@@ -144,6 +156,33 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             Kzz1 = Kzz_in.copy()
             mix1 = mix
 
+        # The gravity
+        grav1 = utils.gravity(self.planet_radius, self.planet_mass, z1)
+
+        # Next, we compute the quench levels
+        quench_levels = utils.determine_quench_levels(T1, P1, Kzz1, mubar1, grav1)
+        ind = np.min(quench_levels) # the deepest quench level
+
+        # If desired, this bit applies quenched initial conditions, and recomputes
+        # the altitude profile for this new mubar.
+        if self.initial_cond_with_quenching:
+
+            # Apply quenching to mixing ratios
+            mix1['CH4'][quench_levels[0]:] = mix1['CH4'][quench_levels[0]]
+            mix1['CO'][quench_levels[0]:] = mix1['CO'][quench_levels[0]]
+            mix1['CO2'][quench_levels[1]:] = mix1['CO2'][quench_levels[1]]
+            mix1['NH3'][quench_levels[2]:] = mix1['NH3'][quench_levels[2]]
+            mix1['HCN'][quench_levels[3]:] = mix1['HCN'][quench_levels[3]]
+
+            # Compute mubar again
+            mubar1[:] = 0.0
+            for i,sp in enumerate(self.dat.species_names[:-2]):
+                for j in range(P1.shape[0]):
+                    mubar1[j] += mix1[sp][j]*self.dat.species_mass[i]
+
+            # Update z1 to get a new altitude profile
+            P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P1, self.P_ref, T1, mubar1, self.planet_radius, self.planet_mass, self.TOA_pressure_avg)
+
         # Save P-T-Kzz for later interpolation and corrections
         self.log10P_interp = np.log10(P1.copy()[::-1])
         self.T_interp = T1.copy()[::-1]
@@ -151,12 +190,6 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.P_desired = P1.copy()
         self.T_desired = T1.copy()
         self.Kzz_desired = Kzz1.copy()
-
-        # The gravity
-        grav1 = utils.gravity(self.planet_radius, self.planet_mass, z1)
-
-        # Next, we compute the deepest quench level
-        ind = utils.deepest_quench_level(T1, P1, Kzz1, mubar1, grav1)
 
         # Bottom of photochemical model will be at a pressure a factor
         # larger than the predicted quench pressure.
