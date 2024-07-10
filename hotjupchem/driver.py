@@ -55,9 +55,6 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         )
         os.remove('tmpfile1234567890.yaml')
 
-        if self.dat.np != 0:
-            raise Exception('Particles are not allowed in the HJ model, currently')
-
         # Save inputs that matter
         self.planet_radius = planet_radius
         self.planet_mass = planet_mass
@@ -177,8 +174,9 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             # Compute mubar again
             mubar1[:] = 0.0
             for i,sp in enumerate(self.dat.species_names[:-2]):
-                for j in range(P1.shape[0]):
-                    mubar1[j] += mix1[sp][j]*self.dat.species_mass[i]
+                if sp in mix1:
+                    for j in range(P1.shape[0]):
+                        mubar1[j] += mix1[sp][j]*self.dat.species_mass[i]
 
             # Update z1 to get a new altitude profile
             P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P1, self.P_ref, T1, mubar1, self.planet_radius, self.planet_mass, self.TOA_pressure_avg)
@@ -306,8 +304,10 @@ class EvoAtmosphereHJ(EvoAtmosphere):
 
         # Now set boundary conditions
         for i,sp in enumerate(species_names):
-            if sp not in ['hv','M']:
-                self.set_lower_bc(sp, bc_type='Moses')
+            if i >= self.dat.np:
+                self.set_lower_bc(sp, bc_type='Moses') # gas
+            else:
+                self.set_lower_bc(sp, bc_type='vdep', vdep=0.0) # particle
         for sp in mix_p:
             Pi = P_p[0]*mix_p[sp][0]
             self.set_lower_bc(sp, bc_type='press', press=Pi)
@@ -372,14 +372,16 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         out['pressure'] = self.wrk.pressure_hydro
         out['temperature'] = self.var.temperature
         out['Kzz'] = self.var.edd
-        species_names = self.dat.species_names[:-2]
+        species_names = self.dat.species_names[:(-2-self.dat.nsl)]
         if equilibrium:
             mix, mubar = self.m.composition(out['temperature'], out['pressure'], self.CtoO, self.metallicity)
             for key in mix:
                 out[key] = mix[key]
+            for key in species_names[:self.dat.np]:
+                out[key] = np.zeros(mix['H2'].shape[0])
         else:
             for i,sp in enumerate(species_names):
-                mix = self.wrk.densities[i,:]/self.wrk.density
+                mix = self.wrk.usol[i,:]/self.wrk.density
                 out[sp] = mix
 
         if not include_deep_atmosphere:
@@ -397,7 +399,10 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         out['temperature'] = np.append(out1['temperature'],out['temperature'])
         out['Kzz'] = np.append(out1['Kzz'],out['Kzz'])
         for i,sp in enumerate(species_names):
-            out[sp] = np.append(mix[sp],out[sp])
+            if sp in mix:
+                out[sp] = np.append(mix[sp],out[sp])
+            else:
+                out[sp] = np.append(np.zeros(mix['H2'].shape[0]),out[sp])
 
         return out
     
