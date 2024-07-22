@@ -76,11 +76,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.TOA_pressure_avg = 1.0e-7*1e6 # mean TOA pressure (dynes/cm^2)
         self.max_dT_tol = 5 # The permitted difference between T in photochem and desired T
         self.max_dlog10edd_tol = 0.2 # The permitted difference between Kzz in photochem and desired Kzz
-        self.atol_min = 1e-17 # min atol that will be tried
-        self.atol_max = 1e-15 # max atol that will be tried
-        self.atol_avg = 1e-16 # avg atol that is tried
         self.freq_update_PTKzz = 1000 # step frequency to update PTKzz profile.
-        self.freq_reinit = 10_000 # step frequency to reinitialize integration and change atol
         self.max_total_step = 100_000 # Maximum total allowed steps before giving up
         self.min_step_conv = 300 # Min internal steps considered before convergence is allowed
         self.verbose = True # print information or not?
@@ -89,7 +85,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         # Values in photochem to adjust
         self.var.upwind_molec_diff = True
         self.var.autodiff = True # Turn on autodiff
-        self.var.atol = self.atol_avg
+        self.var.atol = 1.0e-18
         self.var.conv_min_mix = 1e-10 # Min mix to consider during convergence check
         self.var.conv_longdy = 0.01 # threshold relative change that determines convergence
         self.var.verbose = 0 # No printing
@@ -433,7 +429,6 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             raise Exception('This routine can only be called after `initialize_to_climate_equilibrium_PT`')
         
         self.total_step_counter = 0
-        self.atol_counter = 0
         self.nerrors = 0
         self.initialize_stepper(usol)
         self.robust_stepper_initialized = True
@@ -461,7 +456,6 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         for i in range(1):
             try:
                 self.step()
-                self.atol_counter += 1
                 self.total_step_counter += 1
             except PhotoException as e:
                 # If there is an error, lets reinitialize, but get rid of any
@@ -503,13 +497,6 @@ class EvoAtmosphereHJ(EvoAtmosphere):
                 reached_steady_state = True
                 break
 
-            if self.atol_counter > self.freq_reinit:
-                # Convergence has not happened after 10000 steps, so we try a new atol
-                self.var.atol = 10.0**np.random.uniform(low=np.log10(self.atol_min),high=np.log10(self.atol_max))
-                self.initialize_stepper(self.wrk.usol)
-                self.atol_counter = 0
-                break
-        
             if not (self.wrk.nsteps % self.freq_update_PTKzz) or (condition1 and not condition2):
                 # After ~1000 steps, lets update P,T, edd and vertical grid
                 self.set_press_temp_edd(self.P_desired,self.T_desired,self.Kzz_desired,hydro_pressure=True)
