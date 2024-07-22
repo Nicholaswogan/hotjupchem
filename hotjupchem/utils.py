@@ -17,7 +17,7 @@ class Metallicity():
         """
         self.gas = equilibrate.ChemEquiAnalysis(filename)
 
-    def composition(self, T, P, CtoO, metal):
+    def composition(self, T, P, CtoO, metal, rainout_condensed_atoms = True):
         """Given a T-P profile, C/O ratio and metallicity, the code
         computes chemical equilibrium composition.
 
@@ -32,6 +32,8 @@ class Metallicity():
             composition as solar.
         metal : float
             Metallicity relative to solar.
+        rainout_condensed_atoms : bool, optional
+            If True, then the code will rainout atoms that condense.
 
         Returns
         -------
@@ -62,16 +64,32 @@ class Metallicity():
 
         # For output
         out = {}
-        for sp in self.gas.species_names:
+        for sp in self.gas.gas_names:
             out[sp] = np.empty(P.shape[0])
         mubar = np.empty(P.shape[0])
+        
+        molfracs_atoms = self.gas.molfracs_atoms_sun
+        for i,sp in enumerate(self.gas.atoms_names):
+            if sp != 'H' and sp != 'He':
+                molfracs_atoms[i] = self.gas.molfracs_atoms_sun[i]*metal
+        molfracs_atoms = molfracs_atoms/np.sum(molfracs_atoms)
+
+        # Adjust C and O to get desired C/O ratio. CtoO is relative to solar
+        indC = self.gas.atoms_names.index('C')
+        indO = self.gas.atoms_names.index('O')
+        x = CtoO*(molfracs_atoms[indC]/molfracs_atoms[indO])
+        a = (x*molfracs_atoms[indO] - molfracs_atoms[indC])/(1+x)
+        molfracs_atoms[indC] = molfracs_atoms[indC] + a
+        molfracs_atoms[indO] = molfracs_atoms[indO] - a
 
         # Compute chemical equilibrium at all altitudes
         for i in range(P.shape[0]):
-            self.gas.solve_metallicity(P[i], T[i], metal, CtoO)
-            for j,sp in enumerate(self.gas.species_names):
-                out[sp][i] = self.gas.molfracs_species[j]
+            self.gas.solve(P[i], T[i], molfracs_atoms=molfracs_atoms)
+            for j,sp in enumerate(self.gas.gas_names):
+                out[sp][i] = self.gas.molfracs_species_gas[j]
             mubar[i] = self.gas.mubar
+            if rainout_condensed_atoms:
+                molfracs_atoms = self.gas.molfracs_atoms_gas
 
         return out, mubar
     

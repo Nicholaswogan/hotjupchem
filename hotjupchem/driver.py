@@ -18,7 +18,7 @@ def custom_binary_diffusion_fcn(mu_i, mubar, T):
 
 class EvoAtmosphereHJ(EvoAtmosphere):
 
-    def __init__(self, mechanism_file, stellar_flux_file, planet_mass, planet_radius, P_ref, nz=100):
+    def __init__(self, mechanism_file, stellar_flux_file, planet_mass, planet_radius, P_ref, nz=100, thermo_file = None):
         """Initializes the code
 
         Parameters
@@ -35,6 +35,8 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             Pressure level corresponding to the planet_radius
         nz : int, optional
             The number of layers in the photochemical model, by default 100
+        thermo_file: str, optional
+            Optionally include a dedicated thermodynamic file.
         """        
         
         # First, initialize photochemical model with dummy inputs
@@ -66,7 +68,9 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.BOA_pressure_factor = 10.0
         self.initial_cond_with_quenching = True
         # For computing chemical equilibrium at a metallicity.
-        self.m = utils.Metallicity(mechanism_file)
+        if thermo_file is None:
+            thermo_file = mechanism_file
+        self.m = utils.Metallicity(thermo_file)
 
         # Parameters for determining steady state
         self.TOA_pressure_avg = 1.0e-7*1e6 # mean TOA pressure (dynes/cm^2)
@@ -83,6 +87,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.freq_print = 100 # Frequency in which to print
 
         # Values in photochem to adjust
+        self.var.upwind_molec_diff = True
         self.var.autodiff = True # Turn on autodiff
         self.var.atol = self.atol_avg
         self.var.conv_min_mix = 1e-10 # Min mix to consider during convergence check
@@ -105,7 +110,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         # Index of climate grid that is bottom of photochemical grid
         self.ind_b = None
 
-    def initialize_to_climate_equilibrium_PT(self, P_in, T_in, Kzz_in, metallicity, CtoO):
+    def initialize_to_climate_equilibrium_PT(self, P_in, T_in, Kzz_in, metallicity, CtoO, rainout_condensed_atoms=True):
         """Initialized the photochemical model to a climate model result that assumes chemical equilibrium
         at some metallicity and C/O ratio.
 
@@ -136,7 +141,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.CtoO = CtoO
 
         # Compute chemical equilibrium along the whole P-T profile
-        mix, mubar = self.m.composition(T_in, P_in, CtoO, metallicity)
+        mix, mubar = self.m.composition(T_in, P_in, CtoO, metallicity, rainout_condensed_atoms)
 
         if self.TOA_pressure_avg*3 > P_in[-1]:
             raise Exception('The photochemical grid needs to extend above the climate grid')
@@ -170,6 +175,16 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             mix1['CO2'][quench_levels[1]:] = mix1['CO2'][quench_levels[1]]
             mix1['NH3'][quench_levels[2]:] = mix1['NH3'][quench_levels[2]]
             mix1['HCN'][quench_levels[3]:] = mix1['HCN'][quench_levels[3]]
+
+            # Quenching out H2 at the CH4 level seems to work well
+            mix1['H2'][quench_levels[0]:] = mix1['H2'][quench_levels[0]]
+
+            # Normalize mixing ratios
+            mix_tot = np.zeros(mix1['CH4'].shape[0])
+            for key in mix1:
+                mix_tot += mix1[key]
+            for key in mix1:
+                mix1[key] = mix1[key]/mix_tot
 
             # Compute mubar again
             mubar1[:] = 0.0
@@ -349,7 +364,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
 
         return sol
 
-    def return_atmosphere(self, include_deep_atmosphere = True, equilibrium = False):
+    def return_atmosphere(self, include_deep_atmosphere = True, equilibrium = False, rainout_condensed_atoms = True):
         """Returns a dictionary with temperature, Kzz and mixing ratios
         on the photochemical grid.
 
@@ -374,7 +389,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         out['Kzz'] = self.var.edd
         species_names = self.dat.species_names[:(-2-self.dat.nsl)]
         if equilibrium:
-            mix, mubar = self.m.composition(out['temperature'], out['pressure'], self.CtoO, self.metallicity)
+            mix, mubar = self.m.composition(out['temperature'], out['pressure'], self.CtoO, self.metallicity, rainout_condensed_atoms)
             for key in mix:
                 out[key] = mix[key]
             for key in species_names[:self.dat.np]:
@@ -393,7 +408,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         out1['pressure'] = self.P_desired[inds]
         out1['temperature'] = self.T_desired[inds]
         out1['Kzz'] = self.Kzz_desired[inds]
-        mix, mubar = self.m.composition(out1['temperature'], out1['pressure'], self.CtoO, self.metallicity)
+        mix, mubar = self.m.composition(out1['temperature'], out1['pressure'], self.CtoO, self.metallicity, rainout_condensed_atoms)
         
         out['pressure'] = np.append(out1['pressure'],out['pressure'])
         out['temperature'] = np.append(out1['temperature'],out['temperature'])
