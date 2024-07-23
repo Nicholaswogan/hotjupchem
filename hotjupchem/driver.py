@@ -18,7 +18,8 @@ def custom_binary_diffusion_fcn(mu_i, mubar, T):
 
 class EvoAtmosphereHJ(EvoAtmosphere):
 
-    def __init__(self, mechanism_file, stellar_flux_file, planet_mass, planet_radius, P_ref, nz=100, thermo_file = None):
+    def __init__(self, mechanism_file, stellar_flux_file, planet_mass, planet_radius, 
+                 nz=100, P_ref=1.0e6, thermo_file=None):
         """Initializes the code
 
         Parameters
@@ -31,10 +32,10 @@ class EvoAtmosphereHJ(EvoAtmosphere):
             Planet mass in grams
         planet_radius : float
             Planet radius in cm
-        P_ref : float
-            Pressure level corresponding to the planet_radius
         nz : int, optional
             The number of layers in the photochemical model, by default 100
+        P_ref : float, optional
+            Pressure level corresponding to the planet_radius, by default 1e6 dynes/cm^2
         thermo_file: str, optional
             Optionally include a dedicated thermodynamic file.
         """        
@@ -48,8 +49,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         sol = FormatSettings_main(sol)
         with open('tmpfile1234567890.yaml', 'w') as f:
             yaml.dump(sol,f,Dumper=MyDumper)
-        EvoAtmosphere.__init__(
-            self,
+        super().__init__(
             mechanism_file,
             'tmpfile1234567890.yaml',
             stellar_flux_file,
@@ -66,6 +66,8 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         # The factor of pressure the atmosphere extends
         # compared to predicted quench points of gases
         self.BOA_pressure_factor = 10.0
+        # If True, then the guessed initial condition will used
+        # quenching relations as an initial guess
         self.initial_cond_with_quenching = True
         # For computing chemical equilibrium at a metallicity.
         if thermo_file is None:
@@ -79,7 +81,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.freq_update_PTKzz = 1000 # step frequency to update PTKzz profile.
         self.max_total_step = 100_000 # Maximum total allowed steps before giving up
         self.min_step_conv = 300 # Min internal steps considered before convergence is allowed
-        self.verbose = True # print information or not?
+        self.verbose = False # print information or not?
         self.freq_print = 100 # Frequency in which to print
 
         # Values in photochem to adjust
@@ -88,7 +90,6 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.var.atol = 1.0e-18
         self.var.conv_min_mix = 1e-10 # Min mix to consider during convergence check
         self.var.conv_longdy = 0.01 # threshold relative change that determines convergence
-        self.var.verbose = 0 # No printing
         self.var.custom_binary_diffusion_fcn = custom_binary_diffusion_fcn
 
         # Values that will be needed later. All of these set
@@ -105,6 +106,10 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         self.Kzz_desired = None
         # Index of climate grid that is bottom of photochemical grid
         self.ind_b = None
+        # information needed during robust stepping
+        self.total_step_counter = None
+        self.nerrors = None
+        self.robust_stepper_initialized = None
 
     def initialize_to_climate_equilibrium_PT(self, P_in, T_in, Kzz_in, metallicity, CtoO, rainout_condensed_atoms=True):
         """Initialized the photochemical model to a climate model result that assumes chemical equilibrium
@@ -532,8 +537,64 @@ class EvoAtmosphereHJ(EvoAtmosphere):
                 success = False
                 break
         return success
-        
-
     
+    def model_state_to_dict(self):
+        """Returns a dictionary containing all information needed to reinitialize the atmospheric
+        state. This dictionary can be used as an input to "initialize_from_dict".
+        """
 
+        if self.P_clima_grid is None:
+            raise Exception('This routine can only be called after `initialize_to_climate_equilibrium_PT`')
 
+        out = {}
+        out['P_clima_grid'] = self.P_clima_grid
+        out['metallicity'] = self.metallicity
+        out['CtoO'] = self.CtoO
+        out['log10P_interp'] = self.log10P_interp
+        out['T_interp'] = self.T_interp
+        out['log10edd_interp'] = self.log10edd_interp
+        out['P_desired'] = self.P_desired
+        out['T_desired'] = self.T_desired
+        out['Kzz_desired'] = self.Kzz_desired
+        out['ind_b'] = self.ind_b
+        out['planet_radius_new'] = self.dat.planet_radius
+        out['top_atmos'] = self.var.top_atmos
+        out['temperature'] = self.var.temperature
+        out['edd'] = self.var.edd
+        out['usol'] = self.wrk.usol
+        out['P_i_surf'] = (self.wrk.usol[self.dat.np:,0]/self.wrk.density[0])*self.wrk.pressure[0]
+
+        return out
+
+    def initialize_from_dict(self, out):
+        """Initializes the model from a dictionary created by the "model_state_to_dict" routine.
+        """
+
+        self.P_clima_grid = out['P_clima_grid']
+        self.metallicity = out['metallicity']
+        self.CtoO = out['CtoO']
+        self.log10P_interp = out['log10P_interp']
+        self.T_interp = out['T_interp']
+        self.log10edd_interp = out['log10edd_interp']
+        self.P_desired = out['P_desired']
+        self.T_desired = out['T_desired']
+        self.Kzz_desired = out['Kzz_desired']
+        self.ind_b = out['ind_b']
+        self.dat.planet_radius = out['planet_radius_new']
+        self.update_vertical_grid(TOA_alt=out['top_atmos'])
+        self.set_temperature(out['temperature'])
+        self.var.edd = out['edd']
+        self.wrk.usol = out['usol']
+
+        # Now set boundary conditions
+        species_names = self.dat.species_names[:(-2-self.dat.nsl)]
+        for i,sp in enumerate(species_names):
+            if i >= self.dat.np:
+                self.set_lower_bc(sp, bc_type='Moses') # gas
+            else:
+                self.set_lower_bc(sp, bc_type='vdep', vdep=0.0) # particle
+        species_names = self.dat.species_names[self.dat.np:(-2-self.dat.nsl)]
+        for i,sp in enumerate(species_names):
+            self.set_lower_bc(sp, bc_type='press', press=out['P_i_surf'][i])
+
+        self.prep_atmosphere(self.wrk.usol)
