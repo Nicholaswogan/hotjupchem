@@ -19,7 +19,7 @@ def custom_binary_diffusion_fcn(mu_i, mubar, T):
 class EvoAtmosphereHJ(EvoAtmosphere):
 
     def __init__(self, mechanism_file, stellar_flux_file, planet_mass, planet_radius, 
-                 nz=100, P_ref=1.0e6, thermo_file=None):
+                 nz=100, photon_scale_factor=1.0, P_ref=1.0e6, thermo_file=None):
         """Initializes the code
 
         Parameters
@@ -46,6 +46,7 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         sol['atmosphere-grid']['number-of-layers'] = int(nz)
         sol['planet']['planet-mass'] = float(planet_mass)
         sol['planet']['planet-radius'] = float(planet_radius)
+        sol['planet']['photon-scale-factor'] = float(photon_scale_factor)
         sol = FormatSettings_main(sol)
         with open('tmpfile1234567890.yaml', 'w') as f:
             yaml.dump(sol,f,Dumper=MyDumper)
