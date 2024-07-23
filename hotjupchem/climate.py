@@ -13,6 +13,31 @@ class ClimateHJ():
 
     def __init__(self, planet_mass, planet_radius, P_ref, semi_major, Teq, 
                  T_star, logg_star, metal_star, r_star, database_dir):
+        """Initialized the climate model.
+
+        Parameters
+        ----------
+        planet_mass : float
+            Planet mass in Earth masses
+        planet_radius : float
+            Plane radius in Earth radii
+        P_ref : float
+            Reference pressure in dynes/cm^2
+        semi_major : float
+            Semi-major axis in AU
+        Teq : float
+            Equilibrium temperature in K
+        T_star : float
+            Stellar effective temperature in K
+        logg_star : float
+            Stellar gravity in logg
+        metal_star : float
+            Stellar metallicity in log10 units
+        r_star : float
+            Stellar radius in solar radii
+        database_dir : str
+            Path to where climate opacities are stored.
+        """        
         self.nlevel = 91
         self.nofczns = 1
         self.nstr_upper = 85
@@ -31,7 +56,24 @@ class ClimateHJ():
         self.outfolder = './'
 
     def run_climate_model(self, metallicity, CtoO, tint, save_output=False):
+        """Runs the climate model.
 
+        Parameters
+        ----------
+        metallicity : float
+            Metallicity relative to solar
+        CtoO : float
+            The C/O ratio relative to solar
+        tint : float
+            Intrinsic temperature
+        save_output : bool, optional
+            If True, the the output is saved to a pickle file, by default False
+
+        Returns
+        -------
+        dict
+            Dictionary containing the P-T profile
+        """        
         # Get the opacity database
         mh = np.log10(metallicity)
         if mh >= 0:   
