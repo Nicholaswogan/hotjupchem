@@ -234,9 +234,11 @@ def compute_altitude_of_PT(P, P_ref, T, mubar, planet_radius, planet_mass, P_top
             break
 
     # Integrate from P_ref to TOA
-    out2 = integrate.solve_ivp(hydrostatic_equation, [P_ref, P_[-1]], np.array([0.0]), t_eval=P_[ind:], args=args, method='LSODA', rtol=1e-6)
+    out2 = integrate.solve_ivp(hydrostatic_equation, [P_ref, P_[-1]], np.array([0.0]), t_eval=P_[ind:], args=args, rtol=1e-6)
+    assert out2.success
     # Integrate from P_ref to BOA
-    out1 = integrate.solve_ivp(hydrostatic_equation, [P_ref, P_[0]], np.array([0.0]), t_eval=P_[:ind][::-1], args=args, method='LSODA', rtol=1e-6)
+    out1 = integrate.solve_ivp(hydrostatic_equation, [P_ref, P_[0]], np.array([0.0]), t_eval=P_[:ind][::-1], args=args, rtol=1e-6)
+    assert out1.success
 
     # Stitch together
     z_ = np.append(out1.y[0][::-1],out2.y[0])

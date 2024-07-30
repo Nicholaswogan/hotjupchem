@@ -2,6 +2,7 @@ import numpy as np
 import numba as nb
 import os
 from scipy import constants as const
+from tempfile import NamedTemporaryFile
 
 from photochem import EvoAtmosphere, PhotoException
 from photochem.utils._format import yaml, FormatSettings_main, MyDumper, Loader
@@ -48,15 +49,14 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         sol['planet']['planet-radius'] = float(planet_radius)
         sol['planet']['photon-scale-factor'] = float(photon_scale_factor)
         sol = FormatSettings_main(sol)
-        with open('tmpfile1234567890.yaml', 'w') as f:
+        with NamedTemporaryFile('w') as f:
             yaml.dump(sol,f,Dumper=MyDumper)
-        super().__init__(
-            mechanism_file,
-            'tmpfile1234567890.yaml',
-            stellar_flux_file,
-            DATA_DIR+'atmosphere_init.txt'
-        )
-        os.remove('tmpfile1234567890.yaml')
+            super().__init__(
+                mechanism_file,
+                f.name,
+                stellar_flux_file,
+                DATA_DIR+'atmosphere_init.txt'
+            )
 
         # Save inputs that matter
         self.planet_radius = planet_radius
@@ -242,16 +242,18 @@ class EvoAtmosphereHJ(EvoAtmosphere):
         for key in mix:
             if P_in.shape[0] != mix[key].shape[0]:
                 raise Exception('Input P and mix must have same shape')
-        species_names = self.dat.species_names[:-2]
+        species_names = self.dat.species_names[:(-2-self.dat.nsl)]
         if set(list(mix.keys())) != set(species_names):
             raise Exception('Some species are missing from input mix') 
         
         # Compute mubar
         mubar = np.zeros(T_in.shape[0])
         species_mass = self.dat.species_mass
+        particle_names = self.dat.species_names[:self.dat.np]
         for sp in mix:
-            ind = species_names.index(sp)
-            mubar = mubar + mix[sp]*species_mass[ind]
+            if sp not in particle_names:
+                ind = species_names.index(sp)
+                mubar = mubar + mix[sp]*species_mass[ind]
 
         # Compute altitude of P-T grid
         P1, T1, mubar1, z1 = utils.compute_altitude_of_PT(P_in, self.P_ref, T_in, mubar, self.planet_radius, self.planet_mass, self.TOA_pressure_avg)
@@ -325,9 +327,11 @@ class EvoAtmosphereHJ(EvoAtmosphere):
                 self.set_lower_bc(sp, bc_type='Moses') # gas
             else:
                 self.set_lower_bc(sp, bc_type='vdep', vdep=0.0) # particle
+        particle_names = self.dat.species_names[:self.dat.np]
         for sp in mix_p:
-            Pi = P_p[0]*mix_p[sp][0]
-            self.set_lower_bc(sp, bc_type='press', press=Pi)
+            if sp not in particle_names:
+                Pi = P_p[0]*mix_p[sp][0]
+                self.set_lower_bc(sp, bc_type='press', press=Pi)
 
         self.prep_atmosphere(self.wrk.usol)
 
