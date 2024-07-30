@@ -63,6 +63,8 @@ def main():
     # Initialize photochem model
     pc = EvoAtmosphereHJ(zahnle_earth_HHeCNOS,'WASP39_flux.txt',planet_mass, planet_radius, 
                          nz=100, thermo_file=zahnle_earth_thermo)
+    pc.verbose = True
+    pc.var.verbose = 0
 
     # Prepare photochem inputs
     P = out['pressure'][::-1].copy()*1e6
@@ -73,6 +75,8 @@ def main():
             Kzz[i] = 5e7
         else:
             Kzz[i] = 5e7*(5/(P[i]/1e6))**0.5
+
+    # Initialize the photochemical code to equilibrium.
     pc.initialize_to_climate_equilibrium_PT(P, T, Kzz, metallicity, CtoO)
 
     # Photochemical equilibrium
