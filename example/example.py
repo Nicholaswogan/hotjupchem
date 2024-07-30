@@ -28,9 +28,7 @@ def make_plot(sol, soleq):
 
     plt.savefig('WASP39b_Fig1_Tsai2023.pdf',bbox_inches='tight')
 
-def main():
-    # If true, then runs climate model.
-    run_climate = False
+def main(run_climate = False):
 
     planet_mass = 5.314748872540942e+29 # grams
     planet_radius = 9079484000.0 # cm
@@ -90,6 +88,6 @@ def main():
     make_plot(sol, soleq)
 
 if __name__ == '__main__':
-    main()
+    main(run_climate = False)
 
 
