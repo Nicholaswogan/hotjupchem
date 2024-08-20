@@ -8,7 +8,7 @@ setup(
     author='Nicholas Wogan',
     author_email = 'nicholaswogan@gmail.com',
     install_requires=[
-        'photochem>=0.5.6',
+        'photochem==0.5.6',
         'picaso>=3.2',
         'astropy',
         'matplotlib',

@@ -508,9 +508,15 @@ class EvoAtmosphereHJ(EvoAtmosphere):
                 break
 
             if not (self.wrk.nsteps % self.freq_update_PTKzz) or (condition1 and not condition2):
-                # After ~1000 steps, lets update P,T, edd and vertical grid
-                self.set_press_temp_edd(self.P_desired,self.T_desired,self.Kzz_desired,hydro_pressure=True)
-                self.update_vertical_grid(TOA_pressure=self.TOA_pressure_avg)
+                # After ~1000 steps, lets update P,T, edd and vertical grid, if possible.
+                try:
+                    self.set_press_temp_edd(self.P_desired,self.T_desired,self.Kzz_desired,hydro_pressure=True)
+                except PhotoException:
+                    pass
+                try:
+                    self.update_vertical_grid(TOA_pressure=self.TOA_pressure_avg)
+                except PhotoException:
+                    pass
                 self.initialize_stepper(self.wrk.usol)
 
             if self.total_step_counter > self.max_total_step:
